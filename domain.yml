@@ -50,15 +50,18 @@ intents:
 - give_feedback:
     use_entities: true
 - thank:
-    use_entities: false
+    use_entities: []
 - help:
-    use_entities: false
+    use_entities: []
+- nlu_fallback:
+    use_entities: true
 entities:
 - country
 - destination
 - package_title
 - username
 - password
+- feedback
 slots:
   is_authenticated:
     type: rasa.shared.core.slots.BooleanSlot
@@ -100,7 +103,7 @@ responses:
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_request_human_assistant:
-  - text: Sorry, ther is no human assistant available right now, maybe try it later or you can sent an email to customer.service@trippy.social directly if you have anything really urgent 
+  - text: Sorry, ther is no human assistant available right now, maybe try it later or you can sent an email to customer.service@trippy.social directly if you have anything really urgent
   utter_login_or_register:
   - buttons:
     - payload: /login
@@ -142,7 +145,7 @@ responses:
   - text: your feedback is recorded, relevant personnel will deal with it.
   utter_thank:
   - text: Thank you very much!
-  utter_help: 
+  utter_help:
   - text: you can ask me for example:\n 1. show me some popular packages \n 2. show me my orders (after login) \n 3. cancel my trip to [some desitination] \n 4. I want to book a trip \n 5. do you have travel packages in [some country]
   utter_dont_understand:
   - text: I'm sorry, I didn't quite understand that. Could you rephrase? Or you can try to talk to our human assistant.
@@ -165,19 +168,19 @@ actions:
 forms:
   login_form:
     required_slots:
-      username:
-      - entity: username
-        type: from_entity
       password:
       - entity: password
+        type: from_entity
+      username:
+      - entity: username
         type: from_entity
   register_form:
     required_slots:
-      username:
-      - entity: username
-        type: from_entity
       password:
       - entity: password
+        type: from_entity
+      username:
+      - entity: username
         type: from_entity
   book_package_form:
     required_slots:

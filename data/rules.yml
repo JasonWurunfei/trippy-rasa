@@ -43,7 +43,7 @@ rules:
   - intent: ask_for_human_assistant
   - action: utter_request_human_assistant
 
-- rule:
+- rule: make sure user login before proceed
   condition:
     - slot_was_set:
       - is_authenticated: false
@@ -53,7 +53,7 @@ rules:
     - intent: book_package
   - action: utter_login_or_register
 
-- rule:
+- rule: user want to see orders
   condition:
     - slot_was_set:
       - is_authenticated: true

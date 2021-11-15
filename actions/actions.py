@@ -331,10 +331,7 @@ class QueryPopularPackages(Action):
         packages = r.json()['packages']
         dispatcher.utter_message("here are some popular package:")
         for i, package in enumerate(packages, 1):
-            dispatcher.utter_message(f"""
-            {i}. {package['title']}
-            Country: {package['country']} Destination{package['destination']}
-            {package['description']}
-            """)
+            dispatcher.utter_message(f"#{i} {package['title']} Country: {package['country']} Destination: {package['destination']}")
+            dispatcher.utter_message(f"Description: {package['description']}")
         return []
 
