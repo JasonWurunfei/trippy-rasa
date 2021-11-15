@@ -1,0 +1,114 @@
+version: "2.0"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+  - action: utter_if_want_give_feedback
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: ask for help
+  steps:
+  - intent: help
+  - action: utter_help
+
+- rule: thank back user
+  steps:
+  - intent: thank
+  - action: utter_you_are_welcome
+
+- rule: show popular packages
+  steps:
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
+
+- rule: show company information
+  steps:
+  - intent: ask_for_company_info
+  - action: action_query_company_info
+
+- rule: Ask the user to rephrase whenever they send a message with low NLU confidence
+  steps:
+  - intent: nlu_fallback
+  - action: utter_dont_understand
+
+- rule: ask for human
+  steps:
+  - intent: ask_for_human_assistant
+  - action: utter_request_human_assistant
+
+- rule:
+  condition:
+    - slot_was_set:
+      - is_authenticated: false
+  steps:
+  - or:
+    - intent: ask_user_orders
+    - intent: book_package
+  - action: utter_login_or_register
+
+- rule:
+  condition:
+    - slot_was_set:
+      - is_authenticated: true
+  steps:
+  - intent: ask_user_orders
+  - action: action_query_user_orders
+    
+
+- rule: Activate login form
+  steps:
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+
+- rule: Submit login form
+  condition:
+  - active_loop: login_form
+  steps:
+  - action: login_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_login_user
+
+- rule: Activate register form
+  steps:
+  - intent: register
+  - action: register_form
+  - active_loop: register_form
+
+- rule: Submit register form
+  condition:
+  - active_loop: register_form
+  steps:
+  - action: register_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_register_user
+
+- rule: Activate package booking form
+  condition:
+    - slot_was_set:
+      - is_authenticated: true
+  steps:
+  - intent: book_package
+  - action: book_package_form
+  - active_loop: book_package_form
+
+- rule: Submit package booking form
+  condition:
+  - active_loop: book_package_form
+  steps:
+  - action: book_package_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_create_user_order

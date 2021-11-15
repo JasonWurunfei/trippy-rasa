@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  chatbot-rasa:
+    build: .
+    volumes:
+    - ".:/app"
+    network_mode: "host"
+    command: run --cors "*" --enable-api --port 5005
+    
+  chatbot-rasa-action:
+    build: .
+    volumes:
+    - ".:/app"
+    network_mode: "host"
+    command: run actions

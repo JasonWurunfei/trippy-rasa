@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.env
+env/
+
+events.db*
+rasa.db
+story_graph.dot
+
+test.py

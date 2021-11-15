@@ -1,0 +1,153 @@
+version: "2.0"
+
+stories:
+- story: new user wants to know about trippy
+  steps:
+  - intent: register
+  - action: register_form
+  - slot_was_set:
+    - is_authenticated: true
+  - action: action_register_user
+  - intent: ask_for_company_info
+  - action: action_query_company_info
+  - intent: help
+  - action: utter_help
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
+  - intent: book_package
+  - action: book_package_form
+  - slot_was_set:
+    - destination: Bangkok
+  - action: action_create_user_order
+
+- story: user said something dont the bot dont understand
+  steps:
+  - intent: nlu_fallback
+  - action: utter_dont_understand
+  - intent: nlu_fallback
+  - action: utter_dont_understand
+  - intent: ask_for_human_assistant
+  - action: utter_request_human_assistant
+  - intent: give_feedback
+    entities:
+    - feedback: "your customer service is really inefficient!"
+  - action: utter_feedback_recorded
+  - action: utter_thank
+
+- story: user want to see booked orders
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_user_orders
+  - action: utter_login_or_register
+  - intent: login
+  - action: login_form
+  - slot_was_set:
+    - is_authenticated: true
+  - action: action_login_user
+  - intent: ask_user_orders
+  - action: action_query_user_orders
+
+- story: user register new account and see booked orders
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_user_orders
+  - action: utter_login_or_register
+  - intent: register
+  - action: register_form
+  - slot_was_set:
+    - is_authenticated: true
+  - action: action_register_user
+  - intent: ask_user_orders
+  - action: action_query_user_orders
+
+- story: user want to book a trip
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: book_package
+  - action: utter_login_or_register
+  - intent: login
+  - action: login_form
+  - slot_was_set:
+    - is_authenticated: true
+  - action: action_login_user
+  - intent: book_package
+  - action: book_package_form
+  - slot_was_set:
+    - destination: Madrid
+  - action: action_create_user_order
+
+- story: user wants to view popular packages
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
+  - intent: thank
+  - action: utter_you_are_welcome
+  - intent: goodbye
+  - action: utter_goodbye
+  - action: utter_if_want_give_feedback
+  - intent: deny
+  - action: utter_ok
+
+- story: user give feedback
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: give_feedback
+    entities:
+    - feedback: "you tend to forget what I just said."
+  - action: utter_feedback_recorded
+  - action: utter_thank
+
+- story: user cancel trip
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: flight_delays_or_cancellation
+  - action: utter_offer_next_available_or_cancel
+  - intent: cancel_trip
+  - action: utter_confirm_if_cancel
+  - or:
+    - intent: cancel_trip
+    - intent: affirm
+  - action: action_cancel_user_trip
+
+- story: user change flight
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: flight_delays_or_cancellation
+  - action: utter_offer_next_available_or_cancel
+  - intent: get_next_available
+  - action: action_get_next_available_flight
+  - action: utter_ask_if_the_new_flight_is_suitable
+  - intent: affirm
+  - action: action_change_flight
+
+- story: user want to change guide
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: guide_unavailable_or_delayed
+  - action: utter_offer_change_guide
+  - intent: affirm
+  - action: action_change_guide
+
+- story: user want to change guide
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: guide_unavailable_or_delayed
+  - action: utter_offer_change_guide
+  - intent: travel_alone
+  - action: action_offer_coupon

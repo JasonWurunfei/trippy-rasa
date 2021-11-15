@@ -1,0 +1,285 @@
+version: "2.0"
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+    - loha!!!
+    - hello?
+    - Hi there!
+    - Hi
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+- intent: ask_for_human_assistant
+  examples: |
+    - can I talk to a human?
+    - please give me a human assistant
+    - human please!
+    - can you get me a human pls?
+- intent: ask_for_company_info
+  examples: |
+    - can you tell me about trippy?
+    - What does trippy do?
+    - what can trippy offer me?
+    - what kind of compnay is trippy?
+    - is trippy a travel agent?
+    - what is trippy's main business
+- intent: ask_for_popular_packages
+  examples: |
+    - any suggestions?
+    - Are there any popular place to visit?
+    - Any good place to travel?
+    - recommendations?
+    - Are there any popular packages?
+    - show me some popular ones
+- intent: ask_for_package_by_country
+  examples: |
+    - what about [Switzerland](country)?
+    - I want to know the package to [Spain](country)
+    - can you tell me about the package to [Spain](country)
+    - I'd love to know about [Thailand](country)
+    - I want to travel to [Czech Republic](country)
+    - Any package to [France](country)?
+    - Do you have any trip to [Italy](country)
+    - Can you show my pacakges to [South Korea](country)?
+- intent: ask_user_orders
+  examples: |
+    - Can I see my orders?
+    - what packages have I ordered?
+    - I want to know my orders
+    - what packages have I bought?
+    - show me my orders please
+    - I would love to see my orders
+    - show me my orders pls
+    - show me my orders
+    - can I see my orders?
+    - I want to see my orders
+    - orders?
+- intent: login
+  examples: |
+    - I want to login.
+    - login please
+    - pls login.
+    - i would like to login
+    - log in
+    - login pls
+- intent: register
+  examples: |
+    - I want to register
+    - register please
+    - pls register
+    - i would like to register.
+    - I don't have an account yet.
+    - I need a new account
+    - where to create a new account.
+    - create new account
+    - register new account.
+    - register nwe user
+    - I dont have a user account
+    - register pls
+- intent: inform
+  examples: |
+    - my username is [Jason](username)
+    - my password is [123456](password)
+    - The username is [Annie](username)
+    - The password is [32445yu66u](password)
+    - Jack
+    - [Jason666](username)
+    - [Maria_Heiskanen](username)
+    - John12321
+    - [213730d2jii](password)
+    - [Aa720723](password)
+    - [BlueTech](username)
+    - H&H9u982d
+    - the password is [P@ssW0rd](password)
+    - it's Jeff
+    - it's 3492&@*14sdf998%^
+    - [Venice](destination)
+    - [Kalovy Vary](destination)
+    - [Madrid](destination)
+    - [Japan](country)
+    - [Italy](country)
+    - [Czech Republic](country)
+    - [123456](password)
+    - [Jason](username)
+    - [password](password)
+    - [Jenna](username)
+- intent: flight_delays_or_cancellation
+  examples: |
+    - My flight was cancel!!
+    - The flight of my trip was delayed for so long!!
+    - The flight included in package was delayed.
+    - The plane still need hours to take off.
+    - The flght arrived late.
+    - my flight is late!
+    - my flight is late
+    - I've been waiting for the plane to take off for nearly 4 hours now.
+- intent: get_next_available
+  examples: |
+    - show me the next available flight
+    - show me the flight
+    - when is the next fight?
+    - get me the next fight
+- intent: cancel_trip
+  examples: |
+    - I'd like to cancel
+    - cancel the trip please
+    - cancel my order
+    - I don't want to go anymore.
+    - just cancel
+    - cancel anyway
+- intent: guide_unavailable_or_delayed
+  examples: |
+    - The guide didn't show up.
+    - The guide still not turn up
+    - The guide said she is not coming
+    - The guide said he won't be able to come today
+    - the guide is not avaialble right now
+    - the guide is 40 minutes late by now
+    - I've been waiting for the guide for the pass 2 hours
+- intent: travel_alone
+  examples: |
+    - I would love to travel alone
+    - I want to tour by myself
+    - never mine, I will go by myself
+    - I don't need guide anymore
+- intent: hotel_unavailable
+  examples: |
+    - The hotel fontdesk said there is no room now.
+    - The hotel is full
+    - For some reason the hotel manager said the hotal is curretly not available
+    - The hotel included in the package is not open
+    - The hotel is closed.
+    - my room is not available
+- intent: customer_book_hotel
+  examples: |
+    - I will handle it myself
+    - never mind I will book a new one
+    - I already found a place to stay now
+    - I will go look for a new hotel
+    - I booked a new room from another hotel
+- intent: book_package
+  examples: |
+    - i would like to book a package
+    - I want to book the [Kalovy Vary](destination) package.
+    - Book the [Kalovy Vary](destination) package.
+    - I want to buy the trip to [Spain](country)
+    - Book the trip to [Switzerland](country).
+    - I want purchase the tour called [Hokkaido milk blends with snow](package_title)
+    - I'd like to book the [Hokkaido milk blends with snow](package_title) trip.
+    - I want to book a trip to [Kalovy Vary](destination)
+    - I want to book a trip to [Madrid](destination)
+
+- intent: give_feedback
+  examples: |
+    - I want to give a feedback
+    - [The package pricing is unreasonable!](feedback)
+    - [The hotel is terrible](feedback)
+    - I'd like to give some feedback
+    - [I really don't like the way you talk](feedback)
+    - [the guide didn't do his homework at all!](feedback)
+    - [please provide better hotel next time](feedback)]
+
+- intent: thank
+  examples: |
+    - Thanks
+    - ths
+    - thank you
+
+- intent: help
+  examples: |
+    - what can you do?
+    - help
+    - what can you do for me?
+    - what functionality do you have?
+    - help please?
+
+- lookup: country
+  examples: |
+    - Switzerland
+    - Japan
+    - Thailand
+    - South Korea
+    - Czech Republic
+    - France
+    - Italy
+    - Spain
+- lookup: destination
+  examples: |
+    - Praha
+    - Kalovy Vary
+    - Fuengirola
+    - Madrid
+    - Versailles Palace
+    - Mont Saint-Michel
+    - Venice
+    - Pompeii
+    - Chiangmai
+    - Bangkok
+    - Seoul
+    - Busan
+    - Lucerne
+    - Zurich
+    - Hokkaido
+    - Kobe
+- lookup: package_title
+  examples: |
+    - A trip to the Czech capital: Prague Palace
+    - Spas of Europe in The Mill Spa Cloister (Mlynska Kolonada)
+    - A trip to the world's perfect beach, a swim in Fuengirola
+    - Bullring tour
+    - Versailles tour
+    - Embrace nature——the top of Mont Saint-Michel
+    - Water City Fun Tour
+    - Go back to Pompeii, take a swim in ancient places
+    - Chiangmai Tour
+    - Bangkok Tour
+    - Seoul Tour
+    - Busan
+    - Audrey Hepburn's dream journey
+    - European wealth center Tour
+    - Hokkaido milk blends with snow
+    - Top beef Tour
