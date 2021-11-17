@@ -122,3 +122,30 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: action_create_user_order
+
+- rule: Interruption login form
+  condition:
+  - active_loop: login_form
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: login_form
+  - active_loop: login_form
+
+- rule: Interruption register form
+  condition:
+  - active_loop: register_form
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: register_form
+  - active_loop: register_form
+
+- rule: Interruption package booking form
+  condition:
+  - active_loop: book_package_form
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: book_package_form
+  - active_loop: book_package_form

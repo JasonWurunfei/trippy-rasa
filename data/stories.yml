@@ -62,6 +62,34 @@ stories:
   - intent: ask_user_orders
   - action: action_query_user_orders
 
+- story: User doesn't want to continue login
+  steps:
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - intent: stop
+  - action: utter_is_sure_to_stop
+  - or: 
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_ok
+
+- story: User doesn't want to continue register
+  steps:
+  - intent: register
+  - action: register_form
+  - active_loop: register_form
+  - intent: stop
+  - action: utter_is_sure_to_stop
+  - or: 
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_ok
+
 - story: user want to book a trip
   steps:
   - intent: greet
@@ -102,6 +130,45 @@ stories:
     - destination: Madrid
   - action: action_create_user_order
 
+- story: user want to book a trip3
+  steps:
+  - intent: book_package
+  - action: utter_login_or_register
+  - intent: login
+  - action: login_form
+  - slot_was_set:
+    - is_authenticated: true
+  - intent: book_package
+    entities:
+    - destination: Kobe
+  - action: book_package_form
+  - slot_was_set:
+    - destination: Kobe
+  - action: action_create_user_order
+
+- story: User doesn't want to continue booking
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: book_package
+  - action: utter_login_or_register
+  - intent: login
+  - action: login_form
+  - slot_was_set:
+    - is_authenticated: true
+  - action: action_login_user
+  - intent: book_package
+  - action: book_package_form
+  - active_loop: book_package_form
+  - intent: stop
+  - action: utter_is_sure_to_stop
+  - or: 
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_ok
+
 - story: user wants to view popular packages
   steps:
   - intent: greet
@@ -124,6 +191,40 @@ stories:
     entities:
     - country: Japan
   - action: action_query_country_specific_packages
+
+- story: user wants to view country specific package2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_for_package_by_country
+    entities:
+    - country: Japan
+  - action: action_query_country_specific_packages
+  - intent: book_package
+    entities:
+    - destination: Hokkaido
+  - action: utter_login_or_register
+  - intent: login
+  - action: login_form
+  - slot_was_set:
+    - is_authenticated: true
+  - action: action_login_user
+  - intent: book_package
+    entities:
+    - destination: Hokkaido
+  - action: book_package_form
+  - slot_was_set:
+    - destination: Hokkaido
+  - action: action_create_user_order
+  - intent: thank
+  - action: utter_you_are_welcome
+  - intent: goodbye
+  - action: utter_if_want_give_feedback
+  - or:
+    - intent: affirm
+    - intent: give_feedback
+  - action: utter_feedback_recorded
+  - action: utter_thank
 
 - story: user wants to view country specific packages2
   steps:
@@ -222,6 +323,23 @@ stories:
     - intent: customer_book_hotel
   - action: utter_offer_refound_for_hotel
 
+- story: hotel not available3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: hotel_unavailable
+  - action: utter_ask_if_want_new_room
+  - intent: affirm
+  - action: action_find_new_room
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: deny
+  - action: action_find_new_room
+  - action: utter_ask_if_the_new_room_is_suitable
+  - or:
+    - intent: customer_book_hotel
+    - intent: stop
+  - action: utter_offer_refound_for_hotel
+
 - story: user ask for company and contact information
   steps:
   - intent: greet
@@ -232,4 +350,3 @@ stories:
   - action: action_query_company_contact
   - intent: thank
   - action: utter_you_are_welcome
-

@@ -6,6 +6,7 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
 import requests
 import random
+import re
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
@@ -39,6 +40,42 @@ ALLOWED_DESTINATIONS = [
     "Hokkaido",
     "Kobe",
 ]
+
+class ValidateBookPackageForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_register_form"
+    
+    def validate_username(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        username = slot_value
+        pattern = re.compile("^[a-zA-Z][a-zA-Z0-9]*$")
+        if pattern.match(username):
+            dispatcher.utter_message(f"ok, so your username is {username}")
+            return {"username": username}
+        else:
+            dispatcher.utter_message(f"Sorry, username '{username}' is not acceptable.")
+            return {"username": None}
+
+    def validate_password(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        password = slot_value
+        pattern = re.compile("^[^\s-]+$")
+        if pattern.match(password):
+            dispatcher.utter_message(f"ok, so your password is {password}")
+            return {"password": password}
+        else:
+            dispatcher.utter_message(f"Sorry, password '{password}' is not acceptable.")
+            return {"password": None}
 
 class ValidateBookPackageForm(FormValidationAction):
     def name(self) -> Text:
@@ -269,7 +306,7 @@ class ChangeGuide(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
 
-        r = requests.get(f'{config["DB_API_ADDRESS"]}/guide/change', 
+        r = requests.get(f'{config["DB_API_ADDRESS"]}/guide/available', 
                 params={"old_guide_name": "Unknown"})
         new_guide = r.json()['new_guide']
 
@@ -293,7 +330,7 @@ class OfferCoupon(Action):
                                 "destination": destination,
                                 "old_restaurant_name": "Unknown"
                             })
-        restaurant = r.json()['newRestaurant']
+        restaurant = r.json()['new_restaurant']
         dispatcher.utter_message(f"here is a coupon code you can use at {restaurant['name']}, which is a restaurant very close to your location, for your compensation")
         dispatcher.utter_message(f"Trippy@{restaurant['name']}{random.randint(4000,8000)}")
         return []
@@ -308,9 +345,16 @@ class FindNewRoom(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-
-        dispatcher.utter_message("here is the new room")
-
+        destination = next(tracker.get_latest_entity_values("destination"), "Praha")
+        r = requests.get(f'{config["DB_API_ADDRESS"]}/hotel/available', 
+                            params={
+                                "destination": destination,
+                                "old_hotel_name": "Unknown"
+                            })
+        hotel = r.json()['new_hotel']
+        dispatcher.utter_message(f"I've found a new hotel room at {hotel['name']}. Here are their contact information:")
+        dispatcher.utter_message(f"Address: {hotel['address']}, Telephone: {hotel['telephone']}")
+        dispatcher.utter_message(f"The room price is ${hotel['price']}")
         return []
 
 class ChangeNewRoom(Action):
@@ -327,6 +371,15 @@ class ChangeNewRoom(Action):
         dispatcher.utter_message("Okay, your room has been rearranged!")
 
         return []
+
+def utter_packages(dispatcher: CollectingDispatcher, packages: List[Dict]) -> None:
+    for i, package in enumerate(packages, 1):
+        dispatcher.utter_message(
+            text=f"#{i} {package['title']} | Country: {package['country']} | Destination: {package['destination']}",
+            image=package['pic_url'])
+        dispatcher.utter_message(f"Description: {package['description']}")
+        dispatcher.utter_message(f"The trip is {package['duration']} days long and the price is ${package['price']}")
+    dispatcher.utter_message("You can book a package by telling me the package destination.")
 
 class QueryCountrySpecificPackages(Action):
     def name(self) -> Text:
@@ -350,13 +403,7 @@ class QueryCountrySpecificPackages(Action):
         dispatcher.utter_message(f"Here are some packages in {country.title()}.")
         packages = r.json()['packages']
 
-        for i, package in enumerate(packages, 1):
-            dispatcher.utter_message(
-                text=f"#{i} {package['title']} | Country: {package['country']} | Destination: {package['destination']}",
-                image=package['pic_url'])
-            dispatcher.utter_message(f"Description: {package['description']}")
-            dispatcher.utter_message(f"The trip is {package['duration']} days long and the price is ${package['price']}")
-
+        utter_packages(dispatcher, packages)
         return []
 
 
@@ -373,11 +420,6 @@ class QueryPopularPackages(Action):
         r = requests.get(f'{config["DB_API_ADDRESS"]}/package/popular')
         packages = r.json()['packages']
         dispatcher.utter_message("Here are some popular package:")
-        for i, package in enumerate(packages, 1):
-            dispatcher.utter_message(
-                text=f"#{i} {package['title']} | Country: {package['country']} | Destination: {package['destination']}",
-                image=package['pic_url'])
-            dispatcher.utter_message(f"Description: {package['description']}")
-            dispatcher.utter_message(f"The trip is {package['duration']} days long and the price is ${package['price']}")
+        utter_packages(dispatcher, packages)
         return []
 

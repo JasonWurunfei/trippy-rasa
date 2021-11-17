@@ -145,26 +145,47 @@ nlu:
 - intent: inform
   examples: |
     - my username is [Jason](username)
+    - [Jackson](username)
     - my password is [123456](password)
     - The username is [Annie](username)
+    - my username is [abc123__happy](username)
     - The password is [32445yu66u](password)
-    - Jack
+    - [Jack](username)
     - [Jason666](username)
     - [Maria_Heiskanen](username)
-    - John12321
+    - [832d49jd034*^&(*T](password)
+    - [John12321](username)
     - [213730d2jii](password)
     - [Aa720723](password)
     - [BlueTech](username)
-    - H&H9u982d
+    - [H&H9u982d](password)
     - the password is [P@ssW0rd](password)
-    - it's Jeff
-    - it's 3492&@*14sdf998%^
-    - [Venice](destination)
+    - it's [Jeff](username)
+    - it's [3492&@*14sdf998%^](password)
+    - [Praha](destination)
     - [Kalovy Vary](destination)
+    - [Fuengirola](destination)
     - [Madrid](destination)
+    - [Versailles Palace](destination)
+    - [Mont Saint-Michel](destination)
+    - [Venice](destination)
+    - [Pompeii](destination)
+    - [Chiangmai](destination)
+    - [Bangkok](destination)
+    - [Seoul](destination)
+    - [Busan](destination)
+    - [Lucerne](destination)
+    - [Zurich](destination)
+    - [Hokkaido](destination)
+    - [Kobe](destination)
+    - [Switzerland](country)
     - [Japan](country)
-    - [Italy](country)
+    - [Thailand](country)
+    - [South Korea](country)
     - [Czech Republic](country)
+    - [France](country)
+    - [Italy](country)
+    - [Spain](country)
     - [123456](password)
     - [Jason](username)
     - [password](password)
@@ -249,7 +270,8 @@ nlu:
     - I'd like to give some feedback
     - [I really don't like the way you talk](feedback)
     - [the guide didn't do his homework at all!](feedback)
-    - [please provide better hotel next time](feedback)]
+    - [please provide better hotel next time](feedback)
+    - [I dont like your tone](feedback)
 - intent: ask_for_shorter_duration
   examples: |
     - Can you arrange the trip a bit shorter?
@@ -271,6 +293,18 @@ nlu:
     - help please?
     - ?
     - what can you do
+- intent: stop
+  examples: |
+    - Stop
+    - stop
+    - I don't want to login
+    - I dont want to login
+    - stop login
+    - I don't want to buy package now
+    - I don't want to book now
+    - stop booking
+    - I am not interested in booking anymore
+    - I dont want to regitser now
 - lookup: country
   examples: |
     - Switzerland
@@ -317,3 +351,4 @@ nlu:
     - European wealth center Tour
     - Hokkaido milk blends with snow
     - Top beef Tour
+

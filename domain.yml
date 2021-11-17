@@ -59,6 +59,8 @@ intents:
     use_entities: true
 - ask_for_shorter_duration:
     use_entities: true
+- stop:
+    use_entities: true
 entities:
 - country
 - destination
@@ -114,10 +116,14 @@ responses:
     - payload: /register
       title: Register
     text: I need to know your user account to proceed, do you want to login with existing account or register a new one?
-  utter_ask_username:
+  utter_ask_login_form_username:
   - text: Can you tell me your username please?
-  utter_ask_password:
-  - text: Can you tell me your password please? Your password will be encrypted via https so no need to worry.
+  utter_ask_login_form_password:
+  - text: Can you tell me your password please? Your password will be encrypted via SSL so no need to worry.
+  utter_ask_register_form_username:
+  - text: Please tell me the username you want to use. Note, please use username that only contains latin letters and numbers. The username should start with letters and no space or special characters should be used.
+  utter_ask_register_form_password:
+  - text: Please tell me your password. Note, please use password that does not contain space. Your password will be encrypted via SSL so no need to worry.
   utter_offer_next_available_or_cancel:
   - buttons:
     - payload: /get_next_available
@@ -155,6 +161,8 @@ responses:
   - text: I'm sorry, I didn't quite understand that. Could you rephrase? Or you can try to talk to our human assistant.
   utter_short_can_be_arranged:
   - text: A shorter trip can be arranged, but Trippy cannot guarantee hotel bookings. Trippy can only offer the list of hotels, and it’s up to you to book rooms for the duration of the stay.
+  utter_is_sure_to_stop:
+  - text: Are you sure?
 actions:
 - action_query_company_info
 - action_query_user_orders
@@ -170,6 +178,7 @@ actions:
 - action_query_country_specific_packages
 - action_query_popular_packages
 - validate_book_package_form
+- validate_register_form
 - action_create_user_order
 - action_query_company_contact
 forms:
