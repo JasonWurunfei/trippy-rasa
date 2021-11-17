@@ -55,6 +55,10 @@ intents:
     use_entities: []
 - nlu_fallback:
     use_entities: true
+- ask_for_company_contact:
+    use_entities: true
+- ask_for_shorter_duration:
+    use_entities: true
 entities:
 - country
 - destination
@@ -95,13 +99,12 @@ slots:
     influence_conversation: false
 responses:
   utter_greet:
-  - text: Hi~
-  - text: Hi! How can I help?
+  - text: Hi! I am Jason, a customer service chatbot developed by Trippy, how can I help?
   utter_goodbye:
   - text: Bye
-  - text: bye bye ~
+  - text: bye bye
   utter_iamabot:
-  - text: I am a bot, powered by Rasa.
+  - text: I am a customer service chatbot developed by Trippy to help our customers to quickly get information about Trippy and book travel packages.
   utter_request_human_assistant:
   - text: Sorry, ther is no human assistant available right now, maybe try it later or you can sent an email to customer.service@trippy.social directly if you have anything really urgent
   utter_login_or_register:
@@ -130,8 +133,10 @@ responses:
   - text: Do you want me to help you to find another guide instead?
   utter_ask_if_the_new_room_is_suitable:
   - text: Do you want to change to this new room instead?
+  utter_ask_if_want_new_room:
+  - text: I can help you find another room, would you like me to do that?
   utter_offer_refound_for_hotel:
-  - text: The refound for the hotel will be sent back to you at the end of your tour, have a nice trip!
+  - text: The refound for the hotel room will be sent back to you at the end of your tour, have a nice trip!
   utter_ask_destination:
   - text: you can tell me which package to book by telling me the destination of the package.
   utter_you_are_welcome:
@@ -139,16 +144,17 @@ responses:
   utter_if_want_give_feedback:
   - text: would you like to give us some feedback?
   utter_ok:
-  - text: Okay ~
-  - text: okay :)
+  - text: Okay
   utter_feedback_recorded:
   - text: your feedback is recorded, relevant personnel will deal with it.
   utter_thank:
   - text: Thank you very much!
   utter_help:
-  - text: you can ask me for example:\n 1. show me some popular packages \n 2. show me my orders (after login) \n 3. cancel my trip to [some desitination] \n 4. I want to book a trip \n 5. do you have travel packages in [some country]
+  - text: "You can ask me for example: 1. show me some popular packages 2. do you have travel packages in [some country] 3. I want to book a trip 4. show me my orders (after login). I can also help you with: 1. flight deleyed or unavailable 2. guide late or unavailable 3. hotel room unavailable"
   utter_dont_understand:
   - text: I'm sorry, I didn't quite understand that. Could you rephrase? Or you can try to talk to our human assistant.
+  utter_short_can_be_arranged:
+  - text: A shorter trip can be arranged, but Trippy cannot guarantee hotel bookings. Trippy can only offer the list of hotels, and it’s up to you to book rooms for the duration of the stay.
 actions:
 - action_query_company_info
 - action_query_user_orders
@@ -165,22 +171,23 @@ actions:
 - action_query_popular_packages
 - validate_book_package_form
 - action_create_user_order
+- action_query_company_contact
 forms:
   login_form:
     required_slots:
-      password:
-      - entity: password
-        type: from_entity
       username:
       - entity: username
+        type: from_entity
+      password:
+      - entity: password
         type: from_entity
   register_form:
     required_slots:
-      password:
-      - entity: password
-        type: from_entity
       username:
       - entity: username
+        type: from_entity
+      password:
+      - entity: password
         type: from_entity
   book_package_form:
     required_slots:

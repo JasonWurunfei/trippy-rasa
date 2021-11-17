@@ -28,10 +28,20 @@ rules:
   - intent: ask_for_popular_packages
   - action: action_query_popular_packages
 
+- rule: show country specific packages
+  steps:
+  - intent: ask_for_package_by_country
+  - action: action_query_country_specific_packages
+
 - rule: show company information
   steps:
   - intent: ask_for_company_info
   - action: action_query_company_info
+
+- rule: show company contact
+  steps:
+  - intent: ask_for_company_contact
+  - action: action_query_company_contact
 
 - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
   steps:

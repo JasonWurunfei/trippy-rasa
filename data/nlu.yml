@@ -38,6 +38,8 @@ nlu:
     - of course
     - that sounds good
     - correct
+    - ok
+    - Okay
 - intent: deny
   examples: |
     - no
@@ -67,6 +69,14 @@ nlu:
     - what kind of compnay is trippy?
     - is trippy a travel agent?
     - what is trippy's main business
+- intent: ask_for_company_contact
+  examples: |
+    - Where is Trippy
+    - Where is Trippy located?
+    - Can you tell me trippy's address?
+    - what is the trippy phone number?
+    - can I call trippy?
+    - Do you have the number of trippy customer service?
 - intent: ask_for_popular_packages
   examples: |
     - any suggestions?
@@ -75,8 +85,12 @@ nlu:
     - recommendations?
     - Are there any popular packages?
     - show me some popular ones
+    - show me some popular packages
+    - show me some packages
 - intent: ask_for_package_by_country
   examples: |
+    - I want to buy pakcages in [France](country)
+    - can you show me some packages in [Japan](country)
     - what about [Switzerland](country)?
     - I want to know the package to [Spain](country)
     - can you tell me about the package to [Spain](country)
@@ -85,6 +99,12 @@ nlu:
     - Any package to [France](country)?
     - Do you have any trip to [Italy](country)
     - Can you show my pacakges to [South Korea](country)?
+    - do you have package in [Czech Republic](country)?
+    - can you show me some packages to [Spain](country)
+    - I want to go to [South Korea](country)
+    - I want to go to [Japan](country)
+    - I want to go to [South Korean](country)
+    - I want to travel to [Japan](country)
 - intent: ask_user_orders
   examples: |
     - Can I see my orders?
@@ -98,6 +118,7 @@ nlu:
     - can I see my orders?
     - I want to see my orders
     - orders?
+    - show my trip
 - intent: login
   examples: |
     - I want to login.
@@ -106,6 +127,7 @@ nlu:
     - i would like to login
     - log in
     - login pls
+    - login in
 - intent: register
   examples: |
     - I want to register
@@ -147,6 +169,7 @@ nlu:
     - [Jason](username)
     - [password](password)
     - [Jenna](username)
+    - [WuRun fei](username)
 - intent: flight_delays_or_cancellation
   examples: |
     - My flight was cancel!!
@@ -157,6 +180,7 @@ nlu:
     - my flight is late!
     - my flight is late
     - I've been waiting for the plane to take off for nearly 4 hours now.
+    - flight deleyed or unavailable
 - intent: get_next_available
   examples: |
     - show me the next available flight
@@ -171,6 +195,9 @@ nlu:
     - I don't want to go anymore.
     - just cancel
     - cancel anyway
+    - cancel my trip to [Japan](country)
+    - cancel all of them
+    - cancel my trip
 - intent: guide_unavailable_or_delayed
   examples: |
     - The guide didn't show up.
@@ -180,6 +207,7 @@ nlu:
     - the guide is not avaialble right now
     - the guide is 40 minutes late by now
     - I've been waiting for the guide for the pass 2 hours
+    - guide late or unavailable
 - intent: travel_alone
   examples: |
     - I would love to travel alone
@@ -194,6 +222,7 @@ nlu:
     - The hotel included in the package is not open
     - The hotel is closed.
     - my room is not available
+    - hotel room unavailable
 - intent: customer_book_hotel
   examples: |
     - I will handle it myself
@@ -212,7 +241,6 @@ nlu:
     - I'd like to book the [Hokkaido milk blends with snow](package_title) trip.
     - I want to book a trip to [Kalovy Vary](destination)
     - I want to book a trip to [Madrid](destination)
-
 - intent: give_feedback
   examples: |
     - I want to give a feedback
@@ -222,13 +250,18 @@ nlu:
     - [I really don't like the way you talk](feedback)
     - [the guide didn't do his homework at all!](feedback)
     - [please provide better hotel next time](feedback)]
-
+- intent: ask_for_shorter_duration
+  examples: |
+    - Can you arrange the trip a bit shorter?
+    - Do you have package that also travel to [Venice](destination) but shorter duration?
+    - Is it possible to travel short period for this package?
+    - I'm afraid I cannot stay that long.
+    - My vacation is not long enough for me to travel for 18 days.
 - intent: thank
   examples: |
     - Thanks
     - ths
     - thank you
-
 - intent: help
   examples: |
     - what can you do?
@@ -236,7 +269,8 @@ nlu:
     - what can you do for me?
     - what functionality do you have?
     - help please?
-
+    - ?
+    - what can you do
 - lookup: country
   examples: |
     - Switzerland
