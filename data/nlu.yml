@@ -19,6 +19,10 @@ nlu:
     - hello?
     - Hi there!
     - Hi
+    - sir?
+    - hellow
+    - hi Jason I am [Jason](username)
+    - how are you
 - intent: goodbye
   examples: |
     - cu
@@ -30,6 +34,8 @@ nlu:
     - see you around
     - bye bye
     - see you later
+    - good bye
+    - see you bro
 - intent: affirm
   examples: |
     - yes
@@ -40,6 +46,14 @@ nlu:
     - correct
     - ok
     - Okay
+    - sure
+    - yes please
+    - okay
+    - ye
+    - yes pls
+    - please do that
+    - do that
+    - yep
 - intent: deny
   examples: |
     - no
@@ -49,18 +63,27 @@ nlu:
     - don't like that
     - no way
     - not really
+    - No it's too rush
+    - nope
+    - still no
+    - [nah](password)
+    - NO!
+    - NO NO NO!
+    - NO....
 - intent: bot_challenge
   examples: |
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+    - who are you
 - intent: ask_for_human_assistant
   examples: |
     - can I talk to a human?
     - please give me a human assistant
     - human please!
     - can you get me a human pls?
+    - human assistant
 - intent: ask_for_company_info
   examples: |
     - can you tell me about trippy?
@@ -77,6 +100,7 @@ nlu:
     - what is the trippy phone number?
     - can I call trippy?
     - Do you have the number of trippy customer service?
+    - where is trippy?
 - intent: ask_for_popular_packages
   examples: |
     - any suggestions?
@@ -87,6 +111,14 @@ nlu:
     - show me some popular ones
     - show me some popular packages
     - show me some packages
+    - can you show me some package that offered by trippy?
+    - i want to check travel packages
+    - show me some package
+    - can you show me some trips?
+    - can you show me some packages?
+    - show packages
+    - can you show me some packages
+    - can you show the travel packages that is offered by trippy?
 - intent: ask_for_package_by_country
   examples: |
     - I want to buy pakcages in [France](country)
@@ -105,6 +137,35 @@ nlu:
     - I want to go to [Japan](country)
     - I want to go to [South Korean](country)
     - I want to travel to [Japan](country)
+    - tell me something about [Beijing](country)
+    - do you have travel packages in [Londaon](country)
+    - do you have travel packages in [London](country)?
+    - Is there any packages to [outspace](country)
+    - Do you have package to [China](country)
+    - Can you give me a trip to [China](country)
+    - show me  packages to [China](country)
+    - To [France](country)
+    - I want to go on a trip to [France](country)
+    - show me some trip to [France](country)
+    - show me some trips to [France](country)
+    - show me some package to [France](country)
+    - I want a trip to [japan](country)
+    - To [japan](country)
+    - I want to book a trip to [US](country)
+    - I want to book a trip to [Thailand](country)
+    - I wan to go to [czech Republic](country)
+    - I want to see some package in [Spain](country) please
+    - I want to visit [france](country)
+    - I want to visist [france](country)
+    - I want visit [france](country)
+    - I want to pay a visit to [France](country)
+    - I want to go to [france](country)
+    - ok, show me packages in [Italy](country) then
+    - Do you have packages to [China](country)?
+    - ok, show me package to [france](country) then
+    - any packages to [China](country)?
+    - I want to go to [Thailand](country)
+    - I want to see more packages in [Japan](country)
 - intent: ask_user_orders
   examples: |
     - Can I see my orders?
@@ -119,6 +180,7 @@ nlu:
     - I want to see my orders
     - orders?
     - show my trip
+    - show my orders
 - intent: login
   examples: |
     - I want to login.
@@ -128,6 +190,8 @@ nlu:
     - log in
     - login pls
     - login in
+    - /login
+    - login
 - intent: register
   examples: |
     - I want to register
@@ -142,6 +206,7 @@ nlu:
     - register nwe user
     - I dont have a user account
     - register pls
+    - /register
 - intent: inform
   examples: |
     - my username is [Jason](username)
@@ -191,6 +256,217 @@ nlu:
     - [password](password)
     - [Jenna](username)
     - [WuRun fei](username)
+    - [AndrewMillington](username)
+    - call me [AndreMillington](username)
+    - [Tim](username)
+    - [China](country)
+    - Embrace nature——the top of [Mont Saint-Michel](destination)
+    - [Andrew](username)
+    - [Jason2](username)
+    - [kobe](destination)
+    - [Jason3](username)
+    - [Jason4](username)
+    - [Jason5](username)
+    - [Jackson1](username)
+    - [12345678](password)
+    - [111111](password)
+    - [123123](password)
+    - [1234567890](password)
+    - [1234567](password)
+    - [qwerty123](password)
+    - [000000](password)
+    - [1q2w3e](password)
+    - [aa12345678](password)
+    - [abc123](password)
+    - [password1](password)
+    - [1234](password)
+    - [qwertyuiop](password)
+    - [123321](password)
+    - [password123](password)
+    - [1q2w3e4r5t](password)
+    - [iloveyou](password)
+    - [654321](password)
+    - [666666](password)
+    - [987654321](password)
+    - [123](password)
+    - [123456a](password)
+    - [qwe123](password)
+    - [1q2w3e4r](password)
+    - [7777777](password)
+    - [1qaz2wsx](password)
+    - [123qwe](password)
+    - [zxcvbnm](password)
+    - [121212](password)
+    - [asdasd](password)
+    - [a123456](password)
+    - [555555](password)
+    - [dragon](password)
+    - [112233](password)
+    - [123123123](password)
+    - [monkey](password)
+    - [11111111](password)
+    - [qazwsx](password)
+    - [159753](password)
+    - [asdfghjkl](password)
+    - [222222](password)
+    - [1234qwer](password)
+    - [qwerty1](password)
+    - [123654](password)
+    - [123abc](password)
+    - [asdfgh](password)
+    - [777777](password)
+    - [aaaaaa](password)
+    - [myspace1](password)
+    - [88888888](password)
+    - [fuckyou](password)
+    - [123456789a](password)
+    - [999999](password)
+    - [888888](password)
+    - [football](password)
+    - [princess](password)
+    - [789456123](password)
+    - [147258369](password)
+    - [1111111](password)
+    - [sunshine](password)
+    - [michael](password)
+    - [computer](password)
+    - [qwer1234](password)
+    - [daniel](password)
+    - [789456](password)
+    - [11111](password)
+    - [abcd1234](password)
+    - [q1w2e3r4](password)
+    - [shadow](password)
+    - [159357](password)
+    - [123456q](password)
+    - [1111](password)
+    - [samsung](password)
+    - [killer](password)
+    - [asd123](password)
+    - [superman](password)
+    - [master](password)
+    - [12345a](password)
+    - [azerty](password)
+    - [zxcvbn](password)
+    - [qazwsxedc](password)
+    - [131313](password)
+    - [ashley](password)
+    - [target123](password)
+    - [987654](password)
+    - [baseball](password)
+    - [qwert](password)
+    - [asdasd123](password)
+    - [qwerty](password)
+    - [soccer](password)
+    - [charlie](password)
+    - [qweasdzxc](password)
+    - [tinkle](password)
+    - [jessica](password)
+    - [q1w2e3r4t5](password)
+    - [asdf](password)
+    - [test1](password)
+    - [1g2w3e4r](password)
+    - [gwerty123](password)
+    - [zag12wsx](password)
+    - [gwerty](password)
+    - [147258](password)
+    - [12341234](password)
+    - [qweqwe](password)
+    - [jordan](password)
+    - [pokemon](password)
+    - [q1w2e3r4t5y6](password)
+    - [12345678910](password)
+    - [1111111111](password)
+    - [12344321](password)
+    - [thomas](password)
+    - [love](password)
+    - [12qwaszx](password)
+    - [102030](password)
+    - [welcome](password)
+    - [liverpool](password)
+    - [iloveyou1](password)
+    - [michelle](password)
+    - [101010](password)
+    - [1234561](password)
+    - [hello](password)
+    - [andrew](password)
+    - [a123456789](password)
+    - [a12345](password)
+    - [Status](password)
+    - [fuckyou1](password)
+    - [1qaz2wsx3edc](password)
+    - [hunter](password)
+    - [princess1](password)
+    - [naruto](password)
+    - [justin](password)
+    - [jennifer](password)
+    - [qwerty12](password)
+    - [qweasd](password)
+    - [anthony](password)
+    - [andrea](password)
+    - [joshua](password)
+    - [asdf1234](password)
+    - [12345qwert](password)
+    - [1qazxsw2](password)
+    - [marina](password)
+    - [love123](password)
+    - [111222](password)
+    - [robert](password)
+    - [10203](password)
+    - [nicole](password)
+    - [letmein](password)
+    - [football1](password)
+    - [secret](password)
+    - [1234554321](password)
+    - [freedom](password)
+    - [michael1](password)
+    - [11223344](password)
+    - [qqqqqq](password)
+    - [123654789](password)
+    - [chocolate](password)
+    - [12345q](password)
+    - [internet](password)
+    - [q1w2e3](password)
+    - [google](password)
+    - [starwars](password)
+    - [mynoob](password)
+    - [qwertyui](password)
+    - [55555](password)
+    - [qwertyu](password)
+    - [lol123](password)
+    - [lovely](password)
+    - [monkey1](password)
+    - [nikita](password)
+    - [pakistan](password)
+    - [7758521](password)
+    - [87654321](password)
+    - [147852](password)
+    - [jordan23](password)
+    - [212121](password)
+    - [123789](password)
+    - [147852369](password)
+    - [123456789q](password)
+    - [qwe](password)
+    - [forever](password)
+    - [741852963](password)
+    - [123qweasd](password)
+    - [123456abc](password)
+    - [1q2w3e4r5t6y](password)
+    - [qazxsw](password)
+    - [456789](password)
+    - [232323](password)
+    - [999999999](password)
+    - [qwerty12345](password)
+    - [qwaszx](password)
+    - [1234567891](password)
+    - [456123](password)
+    - [444444](password)
+    - [qq123456](password)
+    - [xxx](password)
+    - [AndrewMilliongton](username)
+    - [Jack2](username)
+    - [Jack3](username)
+    - [Jason123](username)
 - intent: flight_delays_or_cancellation
   examples: |
     - My flight was cancel!!
@@ -202,12 +478,15 @@ nlu:
     - my flight is late
     - I've been waiting for the plane to take off for nearly 4 hours now.
     - flight deleyed or unavailable
+    - The flight is already take off
+    - my flight is delayed
 - intent: get_next_available
   examples: |
     - show me the next available flight
     - show me the flight
     - when is the next fight?
     - get me the next fight
+    - /get_next_available
 - intent: cancel_trip
   examples: |
     - I'd like to cancel
@@ -219,6 +498,8 @@ nlu:
     - cancel my trip to [Japan](country)
     - cancel all of them
     - cancel my trip
+    - cancel it please
+    - ok cancel my package then
 - intent: guide_unavailable_or_delayed
   examples: |
     - The guide didn't show up.
@@ -229,6 +510,7 @@ nlu:
     - the guide is 40 minutes late by now
     - I've been waiting for the guide for the pass 2 hours
     - guide late or unavailable
+    - my guide is late
 - intent: travel_alone
   examples: |
     - I would love to travel alone
@@ -244,6 +526,10 @@ nlu:
     - The hotel is closed.
     - my room is not available
     - hotel room unavailable
+    - my hotel room is gone
+    - my hotel room is not there
+    - my hotel is not available
+    - hotel not available
 - intent: customer_book_hotel
   examples: |
     - I will handle it myself
@@ -262,6 +548,21 @@ nlu:
     - I'd like to book the [Hokkaido milk blends with snow](package_title) trip.
     - I want to book a trip to [Kalovy Vary](destination)
     - I want to book a trip to [Madrid](destination)
+    - I want to book a trip to [China](country)
+    - I want to book a trip
+    - I want the [Kalovy Vary](destination) package
+    - i'd like to book the [Madrid](destination) trip
+    - how can I book a trip?
+    - I would love to buy the [Bangkok](destination) package
+    - I would like to buy the [Bangkok](destination) trip
+    - the [Pompeii](destination) package pls
+    - I want to book the [Mont Saint-Michel](destination) trip
+    - I want to book the [Bangkok](destination) trip
+    - I want to book the [Praha](destination) trip
+    - I will book the [Praha](destination) trip then
+    - ok then I want to book the [Praha](destination) trip
+    - ok then, I'd like to book the [Praha](destination) trip
+    - I want to book the [Kobe](destination) package
 - intent: give_feedback
   examples: |
     - I want to give a feedback
@@ -272,6 +573,8 @@ nlu:
     - [the guide didn't do his homework at all!](feedback)
     - [please provide better hotel next time](feedback)
     - [I dont like your tone](feedback)
+    - [too expensive](feedback)
+    - you should have packages in China
 - intent: ask_for_shorter_duration
   examples: |
     - Can you arrange the trip a bit shorter?
@@ -279,11 +582,15 @@ nlu:
     - Is it possible to travel short period for this package?
     - I'm afraid I cannot stay that long.
     - My vacation is not long enough for me to travel for 18 days.
+    - I want to book the [Bangkok](destination) trip, but can you arrange short trips?
 - intent: thank
   examples: |
     - Thanks
     - ths
     - thank you
+    - fine thanks
+    - Thank you
+    - thanks
 - intent: help
   examples: |
     - what can you do?
@@ -293,6 +600,10 @@ nlu:
     - help please?
     - ?
     - what can you do
+    - how can you help me
+    - ??????
+    - which services can you do
+    - hellp
 - intent: stop
   examples: |
     - Stop
@@ -305,16 +616,221 @@ nlu:
     - stop booking
     - I am not interested in booking anymore
     - I dont want to regitser now
+- intent: ask_for_more_packages_suggestions
+  examples: |
+    - any other choise?
+    - can you give me more?
+    - do you have more?
+    - can you show me more?
+    - more?
+    - any more?
+    - any other packages?
+    - any more packages?
+    - can you give more?
+    - Any more packages?
+    - are there any other trips?
 - lookup: country
   examples: |
-    - Switzerland
-    - Japan
-    - Thailand
-    - South Korea
+    - Afghanistan
+    - Albania
+    - Algeria
+    - Andorra
+    - Angola
+    - Antigua and Barbuda
+    - Argentina
+    - Armenia
+    - Australia
+    - Austria
+    - Azerbaijan
+    - Bahamas
+    - Bahrain
+    - Bangladesh
+    - Barbados
+    - Belarus
+    - Belgium
+    - Belize
+    - Benin
+    - Bhutan
+    - Bolivia
+    - Bosnia and Herzegovina
+    - Botswana
+    - Brazil
+    - Brunei
+    - Bulgaria
+    - Burkina Faso
+    - Burundi
+    - Côte d'Ivoire
+    - Cabo Verde
+    - Cambodia
+    - Cameroon
+    - Canada
+    - Central African Republic
+    - Chad
+    - Chile
+    - China
+    - Colombia
+    - Comoros
+    - Congo-Brazzaville
+    - Congo
+    - Costa Rica
+    - Croatia
+    - Cuba
+    - Cyprus
     - Czech Republic
+    - Czechia
+    - Democratic Republic of the Congo
+    - Denmark
+    - Djibouti
+    - Dominica
+    - Dominican Republic
+    - Ecuador
+    - Egypt
+    - El Salvador
+    - Equatorial Guinea
+    - Eritrea
+    - Estonia
+    - Eswatini
+    - Ethiopia
+    - Fiji
+    - Finland
     - France
+    - Gabon
+    - Gambia
+    - Georgia
+    - Germany
+    - Ghana
+    - Greece
+    - Grenada
+    - Guatemala
+    - Guinea
+    - Guinea-Bissau
+    - Guyana
+    - Haiti
+    - Holy See
+    - Honduras
+    - Hungary
+    - Iceland
+    - India
+    - Indonesia
+    - Iran
+    - Iraq
+    - Ireland
+    - Israel
     - Italy
+    - Jamaica
+    - Japan
+    - Jordan
+    - Kazakhstan
+    - Kenya
+    - Kiribati
+    - Kuwait
+    - Kyrgyzstan
+    - Laos
+    - Latvia
+    - Lebanon
+    - Lesotho
+    - Liberia
+    - Libya
+    - Liechtenstein
+    - Lithuania
+    - Luxembourg
+    - Madagascar
+    - Malawi
+    - Malaysia
+    - Maldives
+    - Mali
+    - Malta
+    - Marshall Islands
+    - Mauritania
+    - Mauritius
+    - Mexico
+    - Micronesia
+    - Moldova
+    - Monaco
+    - Mongolia
+    - Montenegro
+    - Morocco
+    - Mozambique
+    - Myanmar (formerly Burma)
+    - Namibia
+    - Nauru
+    - Nepal
+    - Netherlands
+    - New Zealand
+    - Nicaragua
+    - Niger
+    - Nigeria
+    - North Korea
+    - North Macedonia
+    - Norway
+    - Oman
+    - Pakistan
+    - Palau
+    - Palestine State
+    - Panama
+    - Papua New Guinea
+    - Paraguay
+    - Peru
+    - Philippines
+    - Poland
+    - Portugal
+    - Qatar
+    - Romania
+    - Russia
+    - Rwanda
+    - Saint Kitts and Nevis
+    - Saint Lucia
+    - Saint Vincent and the Grenadines
+    - Samoa
+    - San Marino
+    - Sao Tome and Principe
+    - Saudi Arabia
+    - Senegal
+    - Serbia
+    - Seychelles
+    - Sierra Leone
+    - Singapore
+    - Slovakia
+    - Slovenia
+    - Solomon Islands
+    - Somalia
+    - South Africa
+    - South Korea
+    - South Sudan
     - Spain
+    - Sri Lanka
+    - Sudan
+    - Suriname
+    - Sweden
+    - Switzerland
+    - Syria
+    - Tajikistan
+    - Tanzania
+    - Thailand
+    - Timor-Leste
+    - Togo
+    - Tonga
+    - Trinidad and Tobago
+    - Tunisia
+    - Turkey
+    - Turkmenistan
+    - Tuvalu
+    - Uganda
+    - Ukraine
+    - United Arab Emirates
+    - United Kingdom
+    - UK
+    - United States of America
+    - U.S.
+    - USA
+    - Uruguay
+    - Uzbekistan
+    - Vanuatu
+    - Venezuela
+    - Vietnam
+    - Yemen
+    - Zambia
+    - Zimbabwe
 - lookup: destination
   examples: |
     - Praha
@@ -351,4 +867,3 @@ nlu:
     - European wealth center Tour
     - Hokkaido milk blends with snow
     - Top beef Tour
-

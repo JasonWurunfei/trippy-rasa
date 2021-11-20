@@ -61,7 +61,7 @@ rules:
   - or:
     - intent: ask_user_orders
     - intent: book_package
-  - action: utter_login_or_register
+  - action: action_login_or_register
 
 - rule: user want to see orders
   condition:
@@ -123,6 +123,25 @@ rules:
     - requested_slot: null
   - action: action_create_user_order
 
+- rule: Activate select target package form
+  condition:
+    - slot_was_set:
+      - is_authenticated: true
+  steps:
+  - intent: cancel_trip
+  - action: target_destination_form
+  - active_loop: target_destination_form
+
+- rule: Submit select target package form
+  condition:
+  - active_loop: target_destination_form
+  steps:
+  - action: target_destination_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_cancel_user_trip
+
 - rule: Interruption login form
   condition:
   - active_loop: login_form
@@ -149,3 +168,12 @@ rules:
   - action: utter_iamabot
   - action: book_package_form
   - active_loop: book_package_form
+
+- rule: Interruption select target package form
+  condition:
+  - active_loop: target_destination_form
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: target_destination_form
+  - active_loop: target_destination_form

@@ -61,6 +61,8 @@ intents:
     use_entities: true
 - stop:
     use_entities: true
+- ask_for_more_packages_suggestions:
+    use_entities: true
 entities:
 - country
 - destination
@@ -89,6 +91,11 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: true
+  last_intent:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: true
   orders:
     type: rasa.shared.core.slots.ListSlot
     initial_value: null
@@ -96,6 +103,41 @@ slots:
     influence_conversation: false
   requested_slot:
     type: rasa.shared.core.slots.UnfeaturizedSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+  undesired_hotel_ids:
+    type: rasa.shared.core.slots.ListSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+  no_available_room:
+    type: rasa.shared.core.slots.BooleanSlot
+    initial_value: false
+    auto_fill: false
+    influence_conversation: true
+  undesired_flight_ids:
+    type: rasa.shared.core.slots.ListSlot
+    initial_value: null
+    auto_fill: false
+    influence_conversation: false
+  no_available_flight:
+    type: rasa.shared.core.slots.BooleanSlot
+    initial_value: false
+    auto_fill: false
+    influence_conversation: true
+  showed_packages_ids:
+    type: rasa.shared.core.slots.ListSlot
+    initial_value: null
+    auto_fill: false
+    influence_conversation: false
+  no_more_packages:
+    type: rasa.shared.core.slots.BooleanSlot
+    initial_value: false
+    auto_fill: false
+    influence_conversation: true
+  target_destination: # used to select which order to delete or update
+    type: rasa.shared.core.slots.TextSlot
     initial_value: null
     auto_fill: true
     influence_conversation: false
@@ -109,13 +151,6 @@ responses:
   - text: I am a customer service chatbot developed by Trippy to help our customers to quickly get information about Trippy and book travel packages.
   utter_request_human_assistant:
   - text: Sorry, ther is no human assistant available right now, maybe try it later or you can sent an email to customer.service@trippy.social directly if you have anything really urgent
-  utter_login_or_register:
-  - buttons:
-    - payload: /login
-      title: Login
-    - payload: /register
-      title: Register
-    text: I need to know your user account to proceed, do you want to login with existing account or register a new one?
   utter_ask_login_form_username:
   - text: Can you tell me your username please?
   utter_ask_login_form_password:
@@ -147,6 +182,7 @@ responses:
   - text: you can tell me which package to book by telling me the destination of the package.
   utter_you_are_welcome:
   - text: you are very welcome!
+  - text: you are always welcome!
   utter_if_want_give_feedback:
   - text: would you like to give us some feedback?
   utter_ok:
@@ -156,13 +192,18 @@ responses:
   utter_thank:
   - text: Thank you very much!
   utter_help:
-  - text: "You can ask me for example: 1. show me some popular packages 2. do you have travel packages in [some country] 3. I want to book a trip 4. show me my orders (after login). I can also help you with: 1. flight deleyed or unavailable 2. guide late or unavailable 3. hotel room unavailable"
+  - text: "You can ask me for example: 1. show me some popular packages 2. do you have travel packages in [some country] 3. I want to book a trip 4. show me my orders (after login). I can also help you with: 1. flight deleyed or unavailable 2. guide late or unavailable 3. hotel room unavailable. Last but not least, if you would like to get to know Trippy I can provide you some information about trippy's business as well as some contact information."
   utter_dont_understand:
   - text: I'm sorry, I didn't quite understand that. Could you rephrase? Or you can try to talk to our human assistant.
+  - text: I am afraid I cannot understand the question. Could you please rephrase your question or would you prefer a human assistant?
   utter_short_can_be_arranged:
   - text: A shorter trip can be arranged, but Trippy cannot guarantee hotel bookings. Trippy can only offer the list of hotels, and it’s up to you to book rooms for the duration of the stay.
   utter_is_sure_to_stop:
   - text: Are you sure?
+  utter_please_go_ahead:
+  - text: please go ahead
+  utter_should_find_another_one:
+  - text: Should I go find another one for you?
 actions:
 - action_query_company_info
 - action_query_user_orders
@@ -181,6 +222,9 @@ actions:
 - validate_register_form
 - action_create_user_order
 - action_query_company_contact
+- utter_please_go_ahead
+- action_login_or_register
+- utter_should_find_another_one
 forms:
   login_form:
     required_slots:
@@ -201,6 +245,11 @@ forms:
   book_package_form:
     required_slots:
       destination:
+      - entity: destination
+        type: from_entity
+  target_destination_form:
+    required_slots:
+      target_destination:
       - entity: destination
         type: from_entity
 e2e_actions: []
