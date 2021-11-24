@@ -43,6 +43,11 @@ rules:
   - intent: ask_for_company_contact
   - action: action_query_company_contact
 
+- rule: out of scope
+  steps:
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+
 - rule: Ask the user to rephrase whenever they send a message with low NLU confidence
   steps:
   - intent: nlu_fallback
@@ -61,6 +66,9 @@ rules:
   - or:
     - intent: ask_user_orders
     - intent: book_package
+    - intent: guide_unavailable_or_delayed
+    - intent: flight_delays_or_cancellation
+    - intent: hotel_unavailable
   - action: action_login_or_register
 
 - rule: user want to see orders
@@ -70,7 +78,6 @@ rules:
   steps:
   - intent: ask_user_orders
   - action: action_query_user_orders
-    
 
 - rule: Activate login form
   steps:
@@ -87,6 +94,7 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: action_login_user
+  wait_for_user_input: false
 
 - rule: Activate register form
   steps:
@@ -103,6 +111,7 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: action_register_user
+  wait_for_user_input: false
 
 - rule: Activate package booking form
   condition:
@@ -122,25 +131,6 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - action: action_create_user_order
-
-- rule: Activate select target package form
-  condition:
-    - slot_was_set:
-      - is_authenticated: true
-  steps:
-  - intent: cancel_trip
-  - action: target_destination_form
-  - active_loop: target_destination_form
-
-- rule: Submit select target package form
-  condition:
-  - active_loop: target_destination_form
-  steps:
-  - action: target_destination_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - action: action_cancel_user_trip
 
 - rule: Interruption login form
   condition:
@@ -177,3 +167,40 @@ rules:
   - action: utter_iamabot
   - action: target_destination_form
   - active_loop: target_destination_form
+
+- rule: Activate target destination form when flight unavailable
+  condition:
+  - slot_was_set:
+    - is_authenticated: true
+  - slot_was_set:
+    - last_intent: flight_delays_or_cancellation
+  steps:
+    - or:
+      - intent: cancel_trip
+      - intent: get_next_available
+    - action: action_query_user_orders
+    - slot_was_set:
+      - has_orders: true
+    - slot_was_set:
+      - orders
+    - action: target_destination_form
+    - active_loop: target_destination_form
+
+- rule: Submit select target package form
+  condition:
+  - active_loop: target_destination_form
+  steps:
+  - action: target_destination_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  wait_for_user_input: false
+
+- rule: book shorter trip
+  steps:
+  - intent: ask_for_shorter_duration
+  - action: utter_short_can_be_arranged
+
+- rule: understood
+  steps:
+  - intent: understood

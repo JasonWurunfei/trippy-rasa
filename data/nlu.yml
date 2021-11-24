@@ -23,6 +23,7 @@ nlu:
     - hellow
     - hi Jason I am [Jason](username)
     - how are you
+    - anyone?
 - intent: goodbye
   examples: |
     - cu
@@ -44,8 +45,6 @@ nlu:
     - of course
     - that sounds good
     - correct
-    - ok
-    - Okay
     - sure
     - yes please
     - okay
@@ -54,6 +53,10 @@ nlu:
     - please do that
     - do that
     - yep
+    - yes I would love that
+    - ok this one can do it
+    - yes, this one is cool
+    - yes, actually i do
 - intent: deny
   examples: |
     - no
@@ -66,10 +69,11 @@ nlu:
     - No it's too rush
     - nope
     - still no
-    - [nah](password)
+    - nah
     - NO!
     - NO NO NO!
     - NO....
+    - no I want to book other trips now
 - intent: bot_challenge
   examples: |
     - are you a bot?
@@ -84,6 +88,8 @@ nlu:
     - human please!
     - can you get me a human pls?
     - human assistant
+    - Can I get a human pls?
+    - can you get me a human?
 - intent: ask_for_company_info
   examples: |
     - can you tell me about trippy?
@@ -92,6 +98,10 @@ nlu:
     - what kind of compnay is trippy?
     - is trippy a travel agent?
     - what is trippy's main business
+    - trippy?
+    - ?trippy
+    - what does trippy do?
+    - can you tell me about Trippy?
 - intent: ask_for_company_contact
   examples: |
     - Where is Trippy
@@ -101,6 +111,7 @@ nlu:
     - can I call trippy?
     - Do you have the number of trippy customer service?
     - where is trippy?
+    - where is it?
 - intent: ask_for_popular_packages
   examples: |
     - any suggestions?
@@ -119,6 +130,13 @@ nlu:
     - show packages
     - can you show me some packages
     - can you show the travel packages that is offered by trippy?
+    - show me some packages then
+    - ok, show me some packages then
+    - can you show me some popular packages?
+    - can you show me some pacakges?
+    - I want to see some popular packages
+    - I want to see the packages that you offer
+    - can you give me some suggestions of what package to book?
 - intent: ask_for_package_by_country
   examples: |
     - I want to buy pakcages in [France](country)
@@ -166,6 +184,19 @@ nlu:
     - any packages to [China](country)?
     - I want to go to [Thailand](country)
     - I want to see more packages in [Japan](country)
+    - any packages in [China](country)?
+    - show me some packages to [Switzerland](country) then
+    - no I want to go to [Wenzhou](country)
+    - Show me packages to [Spain](country) then
+    - do you have packages in [China](country)?
+    - show me some packages in [Spain](country) then
+    - show me some package to [Spain](country)
+    - I want to visit [France](country)
+    - do you have package to the [U.S](country).?
+    - ok then show me some package in [Italy](country)
+    - do you have some package in [Japan](country)?
+    - show me some packages in [China](country)
+    - show me some in [Japan](country) then
 - intent: ask_user_orders
   examples: |
     - Can I see my orders?
@@ -181,6 +212,7 @@ nlu:
     - orders?
     - show my trip
     - show my orders
+    - can you show me my orders?
 - intent: login
   examples: |
     - I want to login.
@@ -192,6 +224,7 @@ nlu:
     - login in
     - /login
     - login
+    - Login
 - intent: register
   examples: |
     - I want to register
@@ -207,6 +240,7 @@ nlu:
     - I dont have a user account
     - register pls
     - /register
+    - register
 - intent: inform
   examples: |
     - my username is [Jason](username)
@@ -226,7 +260,6 @@ nlu:
     - [H&H9u982d](password)
     - the password is [P@ssW0rd](password)
     - it's [Jeff](username)
-    - it's [3492&@*14sdf998%^](password)
     - [Praha](destination)
     - [Kalovy Vary](destination)
     - [Fuengirola](destination)
@@ -467,6 +500,24 @@ nlu:
     - [Jack2](username)
     - [Jack3](username)
     - [Jason123](username)
+    - [Ram](username)
+    - [Jack5](username)
+    - [Minna](username)
+    - [Jack4](username)
+    - [abc123456](password)
+    - I want [Zurich](destination)
+    - [JasonWu](username)
+    - [Anna](username)
+    - [Jack6](username)
+    - [Prabhat](username)
+    - [Runfei](username)
+    - [YuJianXiang](username)
+    - [Royce](username)
+    - [Jane](username)
+    - [John](username)
+    - [Jack2](username)
+    - [123456](password)
+    - [Kobe](destination)
 - intent: flight_delays_or_cancellation
   examples: |
     - My flight was cancel!!
@@ -480,6 +531,15 @@ nlu:
     - flight deleyed or unavailable
     - The flight is already take off
     - my flight is delayed
+    - my flight is not available
+    - my flight is not availble
+    - my flight is not here
+    - my flight does delayed
+    - my flight is canceled
+    - my flight is gone
+    - My flight is canceled
+    - my flight is not comming
+    - but my flight did canceled
 - intent: get_next_available
   examples: |
     - show me the next available flight
@@ -500,6 +560,10 @@ nlu:
     - cancel my trip
     - cancel it please
     - ok cancel my package then
+    - /cancel_trip
+    - I want to cancel my trips
+    - I want to cancel my flight
+    - cancel my trip then
 - intent: guide_unavailable_or_delayed
   examples: |
     - The guide didn't show up.
@@ -511,12 +575,23 @@ nlu:
     - I've been waiting for the guide for the pass 2 hours
     - guide late or unavailable
     - my guide is late
+    - my guide is late!
+    - my guide is not comming
+    - my guide is super late man
+    - hi, my guide is not comming
+    - my guide it late
+    - guide is gone
+    - my guide is not here
+    - my guide is gone
 - intent: travel_alone
   examples: |
     - I would love to travel alone
     - I want to tour by myself
     - never mine, I will go by myself
     - I don't need guide anymore
+    - nah, I would rather travel alone now
+    - no, I will travel alone this time
+    - no, I will travel alone
 - intent: hotel_unavailable
   examples: |
     - The hotel fontdesk said there is no room now.
@@ -530,6 +605,13 @@ nlu:
     - my hotel room is not there
     - my hotel is not available
     - hotel not available
+    - my hotel room is not ready
+    - my hotel room is not available
+    - my hotel room is now not available
+    - my hotel room is currently not available
+    - the hotel manager said the room is currently not available
+    - hi, my hotel room is gone
+    - my room is gone
 - intent: customer_book_hotel
   examples: |
     - I will handle it myself
@@ -537,6 +619,9 @@ nlu:
     - I already found a place to stay now
     - I will go look for a new hotel
     - I booked a new room from another hotel
+    - no I will book new room myself
+    - no I will book a new room myself
+    - I will find a place to stay, thanks
 - intent: book_package
   examples: |
     - i would like to book a package
@@ -544,8 +629,6 @@ nlu:
     - Book the [Kalovy Vary](destination) package.
     - I want to buy the trip to [Spain](country)
     - Book the trip to [Switzerland](country).
-    - I want purchase the tour called [Hokkaido milk blends with snow](package_title)
-    - I'd like to book the [Hokkaido milk blends with snow](package_title) trip.
     - I want to book a trip to [Kalovy Vary](destination)
     - I want to book a trip to [Madrid](destination)
     - I want to book a trip to [China](country)
@@ -563,18 +646,40 @@ nlu:
     - ok then I want to book the [Praha](destination) trip
     - ok then, I'd like to book the [Praha](destination) trip
     - I want to book the [Kobe](destination) package
+    - I would love to buy the [Hokkaido](destination) package
+    - I want to book a trip to [Wenzhou](country)
+    - I want the [Hokkaido](destination) package
+    - I want to book the Madird package
+    - I want to book trips
+    - I want to book the trip to [Mont Saint-Michel](destination)
+    - ok then, I want to book the trip to [Kobe](destination)
+    - ok, I want book it
+    - I want to book it
 - intent: give_feedback
   examples: |
     - I want to give a feedback
-    - [The package pricing is unreasonable!](feedback)
+    - [The package pricing is unreasonable](feedback)
     - [The hotel is terrible](feedback)
     - I'd like to give some feedback
     - [I really don't like the way you talk](feedback)
-    - [the guide didn't do his homework at all!](feedback)
+    - [the guide didn't do his homework at all](feedback)
     - [please provide better hotel next time](feedback)
     - [I dont like your tone](feedback)
     - [too expensive](feedback)
-    - you should have packages in China
+    - [you should have packages in China](feedback)
+    - I want to make a complain
+    - [your package in Zurich is too expensive](feedback)
+    - [your guide is not professional at all](feedback)
+    - I want to give feedback
+    - [you sound strange](feedback)
+    - [the food on the flight is not good](feedback)
+    - [your trips suck](feedback)
+    - [you trip sucks](feedback)
+    - [the food on the flight is disgusting](feedback)!
+    - [the hotel arranged is too far from the attractions](feedback)
+    - [The car rental driver is not friendly](country)
+    - [your response time is way too long](feedback)
+    - [maybe you can sound more lively rather than stay this dull](feedback)
 - intent: ask_for_shorter_duration
   examples: |
     - Can you arrange the trip a bit shorter?
@@ -583,6 +688,8 @@ nlu:
     - I'm afraid I cannot stay that long.
     - My vacation is not long enough for me to travel for 18 days.
     - I want to book the [Bangkok](destination) trip, but can you arrange short trips?
+    - do you have shorter trip for the [Hokkaido](destination) package?
+    - do you offer shorter trips to [Kobe](destination)?
 - intent: thank
   examples: |
     - Thanks
@@ -591,6 +698,7 @@ nlu:
     - fine thanks
     - Thank you
     - thanks
+    - thx
 - intent: help
   examples: |
     - what can you do?
@@ -604,6 +712,8 @@ nlu:
     - ??????
     - which services can you do
     - hellp
+    - help me
+    - I need help
 - intent: stop
   examples: |
     - Stop
@@ -629,6 +739,62 @@ nlu:
     - can you give more?
     - Any more packages?
     - are there any other trips?
+    - Any cheaper ones?
+    - do you have any thing cheaper?
+    - do you have packages that cost less than those?
+    - do you have anything cheaper?
+    - can I see more?
+    - pls show me something even cheaper
+    - do you have something cheaper?
+- intent: more_feedback
+  examples: |
+    - I have another feedback to give
+    - I want to say more
+    - I have another one
+    - I have more to say
+    - I have one more
+- intent: ask_for_another
+  examples: |
+    - no the room is too expensive pls give me another one
+    - can I have another one pls?
+    - find me another one
+    - nah, get me another one
+    - no, find me another one
+- intent: out_of_scope
+  examples: |
+    - I love you
+    - Do you know Iron man?
+    - I once saw a tipped over tree that was still growing
+    - Louis, I think this is the beginning of a beautiful friendship.
+    - The weather is good.
+    - what time is it?
+    - do you know Taylor Swift?
+    - somebody just lost 10 million yuan
+    - do you know Flyme the plane agent?
+- intent: ask_about_guide_hotel_and_car_rental
+  examples: |
+    - what about the guide?
+    - what about the hotel arrangement?
+    - what about the car rentals?
+    - do you have guided tour included in the package?
+    - do you have hotel room included in the deal?
+    - I'd like to know what are included in the package.
+    - Can you tell me about the guides?
+    - What are included in the package?
+    - tell me more about the [Kobe](destination) trip.
+    - nice, anything about guide?
+    - Do you have guided tours?
+    - will trippy handle the hotel for me?
+    - is trippy going to secure a room for me?
+    - what hotels and car rentals?
+- intent: understood
+  examples: |
+    - ok
+    - okay
+    - I see
+    - got it
+    - I know it now
+    - understood
 - lookup: country
   examples: |
     - Afghanistan
@@ -849,21 +1015,3 @@ nlu:
     - Zurich
     - Hokkaido
     - Kobe
-- lookup: package_title
-  examples: |
-    - A trip to the Czech capital: Prague Palace
-    - Spas of Europe in The Mill Spa Cloister (Mlynska Kolonada)
-    - A trip to the world's perfect beach, a swim in Fuengirola
-    - Bullring tour
-    - Versailles tour
-    - Embrace nature——the top of Mont Saint-Michel
-    - Water City Fun Tour
-    - Go back to Pompeii, take a swim in ancient places
-    - Chiangmai Tour
-    - Bangkok Tour
-    - Seoul Tour
-    - Busan
-    - Audrey Hepburn's dream journey
-    - European wealth center Tour
-    - Hokkaido milk blends with snow
-    - Top beef Tour

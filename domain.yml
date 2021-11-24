@@ -1,146 +1,108 @@
 version: '2.0'
-config:
-  store_entities_as_slots: true
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- greet:
-    use_entities: true
-- goodbye:
-    use_entities: true
-- affirm:
-    use_entities: true
-- deny:
-    use_entities: true
-- inform:
-    use_entities: true
-- bot_challenge:
-    use_entities: true
-- ask_for_human_assistant:
-    use_entities: true
-- ask_for_company_info:
-    use_entities: true
-- ask_for_popular_packages:
-    use_entities: true
-- ask_for_package_by_country:
-    use_entities: true
-- ask_user_orders:
-    use_entities: true
-- login:
-    use_entities: true
-- register:
-    use_entities: true
-- flight_delays_or_cancellation:
-    use_entities: true
-- get_next_available:
-    use_entities: true
-- cancel_trip:
-    use_entities: true
-- guide_unavailable_or_delayed:
-    use_entities: true
-- travel_alone:
-    use_entities: true
-- customer_book_hotel:
-    use_entities: true
-- hotel_unavailable:
-    use_entities: true
-- book_package:
-    use_entities: true
-- give_feedback:
-    use_entities: true
-- thank:
-    use_entities: []
+- deny
+- affirm
+- get_next_available
+- inform
+- cancel_trip
+- flight_delays_or_cancellation
+- hotel_unavailable
+- login
+- greet
+- out_of_scope
+- ask_for_human_assistant
+- bot_challenge
 - help:
     use_entities: []
-- nlu_fallback:
-    use_entities: true
-- ask_for_company_contact:
-    use_entities: true
-- ask_for_shorter_duration:
-    use_entities: true
-- stop:
-    use_entities: true
-- ask_for_more_packages_suggestions:
-    use_entities: true
+- ask_for_shorter_duration
+- ask_for_popular_packages
+- book_package
+- ask_for_more_packages_suggestions
+- thank:
+    use_entities: []
+- understood
+- ask_for_package_by_country
+- register
+- ask_about_guide_hotel_and_car_rental
+- travel_alone
+- guide_unavailable_or_delayed
+- ask_user_orders
+- goodbye
+- more_feedback
+- give_feedback
+- ask_for_another
+- ask_for_company_contact
+- ask_for_company_info
+- customer_book_hotel
+- stop
 entities:
 - country
 - destination
-- package_title
-- username
-- password
 - feedback
+- last_intent
+- password
+- username
 slots:
   is_authenticated:
-    type: rasa.shared.core.slots.BooleanSlot
+    type: bool
     initial_value: false
-    auto_fill: true
     influence_conversation: true
   username:
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: true
+    type: text
     influence_conversation: true
   password:
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: true
+    type: text
     influence_conversation: true
   destination:
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: true
+    type: text
     influence_conversation: true
   last_intent:
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: true
+    type: text
     influence_conversation: true
-  orders:
-    type: rasa.shared.core.slots.ListSlot
-    initial_value: null
-    auto_fill: true
-    influence_conversation: false
-  requested_slot:
-    type: rasa.shared.core.slots.UnfeaturizedSlot
-    initial_value: null
-    auto_fill: true
-    influence_conversation: false
   undesired_hotel_ids:
-    type: rasa.shared.core.slots.ListSlot
-    initial_value: null
-    auto_fill: true
+    type: list
     influence_conversation: false
   no_available_room:
-    type: rasa.shared.core.slots.BooleanSlot
+    type: bool
     initial_value: false
     auto_fill: false
     influence_conversation: true
   undesired_flight_ids:
-    type: rasa.shared.core.slots.ListSlot
-    initial_value: null
+    type: list
     auto_fill: false
     influence_conversation: false
   no_available_flight:
-    type: rasa.shared.core.slots.BooleanSlot
+    type: bool
     initial_value: false
     auto_fill: false
     influence_conversation: true
   showed_packages_ids:
-    type: rasa.shared.core.slots.ListSlot
-    initial_value: null
+    type: list
     auto_fill: false
     influence_conversation: false
   no_more_packages:
-    type: rasa.shared.core.slots.BooleanSlot
+    type: bool
     initial_value: false
     auto_fill: false
     influence_conversation: true
-  target_destination: # used to select which order to delete or update
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: true
+  target_destination:
+    type: text
     influence_conversation: false
+  has_orders:
+    type: bool
+    initial_value: false
+    auto_fill: false
+    influence_conversation: true
+  orders:
+    type: list
+    auto_fill: false
+    influence_conversation: false
+  feedback:
+    type: text
+    influence_conversation: true
 responses:
   utter_greet:
   - text: Hi! I am Jason, a customer service chatbot developed by Trippy, how can I help?
@@ -161,9 +123,9 @@ responses:
   - text: Please tell me your password. Note, please use password that does not contain space. Your password will be encrypted via SSL so no need to worry.
   utter_offer_next_available_or_cancel:
   - buttons:
-    - payload: /get_next_available
+    - payload: /get_next_available{{"last_intent":"get_next_available"}}
       title: next available flight
-    - payload: /cancel_trip
+    - payload: /cancel_trip{{"last_intent":"cancel_trip"}}
       title: cancel the trip
     text: I can help you find the next available flight, or if you wish, I can cancel the whole trip on your behalf and provide refound. However, if you cancel the trip, we still need to charge 10% of the total price as service fee.
   utter_ask_if_the_new_flight_is_suitable:
@@ -196,6 +158,8 @@ responses:
   utter_dont_understand:
   - text: I'm sorry, I didn't quite understand that. Could you rephrase? Or you can try to talk to our human assistant.
   - text: I am afraid I cannot understand the question. Could you please rephrase your question or would you prefer a human assistant?
+  utter_default:
+  - text: Sorry I didn't get that. Can you rephrase?
   utter_short_can_be_arranged:
   - text: A shorter trip can be arranged, but Trippy cannot guarantee hotel bookings. Trippy can only offer the list of hotels, and it’s up to you to book rooms for the duration of the stay.
   utter_is_sure_to_stop:
@@ -204,27 +168,64 @@ responses:
   - text: please go ahead
   utter_should_find_another_one:
   - text: Should I go find another one for you?
+  utter_ask_target_destination:
+  - text: please choose the order by telling me the destination in order to proceed.
+  utter_cannot_unless_flight_unavailable:
+  - text: Sorry, we can only allow cancellation when flight is delayed or canceled.
+  utter_ask_where:
+  - text: Where do you want to travel? Trippy offers travel packages to Switzerland, Japan, Thailand, South Korea, Czech Republic, France, Italy, and Spain.
+  utter_confirm_book_package:
+  - text: You were saying you want to buy the trip to {destination}, is that correct?
+  utter_detail_about_guide_hotel_and_car_rental:
+  - text: All the packages include free guided tours of major landmarks and venues. Trippy will also ensure hotel booking and car rentals, but these are at your own expense.
+  utter_out_of_scope:
+  - text: Sorry, I can't handle that request.
+  - text: Sorry, what you said is beyond my ability. If you really need to solve that you contact our human customer service.
 actions:
-- action_query_company_info
-- action_query_user_orders
-- action_login_user
-- action_register_user
 - action_cancel_user_trip
-- action_get_next_available_flight
 - action_change_flight
 - action_change_guide
-- action_offer_coupon
-- action_find_new_room
 - action_change_new_room
+- action_create_user_order
+- action_find_new_room
+- action_get_next_available_flight
+- action_login_or_register
+- action_login_user
+- action_offer_coupon
+- action_query_company_contact
+- action_query_company_info
 - action_query_country_specific_packages
 - action_query_popular_packages
+- action_query_user_orders
+- action_register_user
+- utter_ask_if_the_new_flight_is_suitable
+- utter_ask_if_the_new_room_is_suitable
+- utter_ask_if_want_new_room
+- utter_ask_where
+- utter_cannot_unless_flight_unavailable
+- utter_confirm_book_package
+- utter_detail_about_guide_hotel_and_car_rental
+- utter_dont_understand
+- utter_feedback_recorded
+- utter_goodbye
+- utter_greet
+- utter_help
+- utter_iamabot
+- utter_if_want_give_feedback
+- utter_offer_change_guide
+- utter_offer_next_available_or_cancel
+- utter_offer_refound_for_hotel
+- utter_ok
+- utter_out_of_scope
+- utter_please_go_ahead
+- utter_request_human_assistant
+- utter_short_can_be_arranged
+- utter_should_find_another_one
+- utter_thank
+- utter_you_are_welcome
 - validate_book_package_form
 - validate_register_form
-- action_create_user_order
-- action_query_company_contact
-- utter_please_go_ahead
-- action_login_or_register
-- utter_should_find_another_one
+- validate_target_destination_form
 forms:
   login_form:
     required_slots:
@@ -252,4 +253,3 @@ forms:
       target_destination:
       - entity: destination
         type: from_entity
-e2e_actions: []

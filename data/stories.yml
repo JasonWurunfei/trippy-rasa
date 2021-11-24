@@ -1,327 +1,588 @@
 version: "2.0"
 stories:
-- story: new user wants to know about trippy
+
+- story: ask company info1
   steps:
-  - intent: register
-  - action: register_form
-  - slot_was_set:
-    - is_authenticated: true
-  - action: action_register_user
+  - intent: greet
+  - action: utter_greet
   - intent: ask_for_company_info
   - action: action_query_company_info
-  - intent: help
-  - action: utter_help
-  - intent: ask_for_popular_packages
-  - action: action_query_popular_packages
-  - intent: book_package
-  - action: book_package_form
-  - slot_was_set:
-    - destination: Bangkok
-  - action: action_create_user_order
-- story: user said something dont the bot dont understand
-  steps:
-  - intent: nlu_fallback
-  - action: utter_dont_understand
-  - intent: nlu_fallback
-  - action: utter_dont_understand
-  - intent: ask_for_human_assistant
-  - action: utter_request_human_assistant
-  - intent: give_feedback
-    entities:
-    - feedback: your customer service is really inefficient!
-  - action: utter_feedback_recorded
-  - action: utter_thank
-- story: user want to see booked orders
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: ask_user_orders
-  - action: action_login_or_register
-  - intent: login
-  - action: login_form
-  - slot_was_set:
-    - is_authenticated: true
-  - action: action_login_user
-  - intent: ask_user_orders
-  - action: action_query_user_orders
-- story: user register new account and see booked orders
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: ask_user_orders
-  - action: action_login_or_register
-  - intent: register
-  - action: register_form
-  - slot_was_set:
-    - is_authenticated: true
-  - action: action_register_user
-  - intent: ask_user_orders
-  - action: action_query_user_orders
-- story: User doesn't want to continue login
-  steps:
-  - intent: login
-  - action: login_form
-  - active_loop: login_form
-  - intent: stop
-  - action: utter_is_sure_to_stop
-  - or:
-    - intent: stop
-    - intent: affirm
-  - action: action_deactivate_loop
-  - active_loop: null
-  - action: utter_ok
-- story: User doesn't want to continue register
-  steps:
-  - intent: register
-  - action: register_form
-  - active_loop: register_form
-  - intent: stop
-  - action: utter_is_sure_to_stop
-  - or:
-    - intent: stop
-    - intent: affirm
-  - action: action_deactivate_loop
-  - active_loop: null
-  - action: utter_ok
-- story: User doesn't want to continue booking
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: book_package
-  - action: action_login_or_register
-  - intent: login
-  - action: login_form
-  - slot_was_set:
-    - is_authenticated: true
-  - action: action_login_user
-  - intent: book_package
-  - action: book_package_form
-  - active_loop: book_package_form
-  - intent: stop
-  - action: utter_is_sure_to_stop
-  - or:
-    - intent: stop
-    - intent: affirm
-  - action: action_deactivate_loop
-  - active_loop: null
-  - action: utter_ok
-- story: user wants to view popular packages
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: ask_for_popular_packages
-  - action: action_query_popular_packages
-  - intent: thank
-  - action: utter_you_are_welcome
-  - intent: goodbye
-  - action: utter_goodbye
-  - action: utter_if_want_give_feedback
-  - intent: deny
-  - action: utter_ok
-- story: user wants to view country specific packages
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: ask_for_package_by_country
-    entities:
-    - country: Japan
-  - action: action_query_country_specific_packages
-- story: user wants to view country specific package2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: ask_for_package_by_country
-    entities:
-    - country: Japan
-  - action: action_query_country_specific_packages
-  - intent: book_package
-    entities:
-    - destination: Hokkaido
-  - action: action_login_or_register
-  - intent: login
-  - action: login_form
-  - slot_was_set:
-    - is_authenticated: true
-  - action: action_login_user
-  - intent: book_package
-    entities:
-    - destination: Hokkaido
-  - action: book_package_form
-  - slot_was_set:
-    - destination: Hokkaido
-  - action: action_create_user_order
-  - intent: thank
-  - action: utter_you_are_welcome
-  - intent: goodbye
-  - action: utter_if_want_give_feedback
-  - or:
-    - intent: affirm
-    - intent: give_feedback
-  - action: utter_feedback_recorded
-  - action: utter_thank
-- story: user wants to view country specific packages2
+
+- story: ask company info2
   steps:
   - intent: greet
   - action: utter_greet
   - intent: help
   - action: utter_help
-  - intent: ask_for_package_by_country
-    entities:
-    - country: Japan
-  - action: action_query_country_specific_packages
-- story: user give feedback
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: give_feedback
-    entities:
-    - feedback: you tend to forget what I just said.
-  - action: utter_feedback_recorded
-  - action: utter_thank
-- story: user cancel trip
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: help
-  - action: utter_help
-  - intent: flight_delays_or_cancellation
-  - action: utter_offer_next_available_or_cancel
-  - intent: cancel_trip
-  - action: utter_confirm_if_cancel
-  - or:
-    - intent: cancel_trip
-    - intent: affirm
-  - action: action_cancel_user_trip
-- story: user change flight
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: help
-  - action: utter_help
-  - intent: flight_delays_or_cancellation
-  - action: utter_offer_next_available_or_cancel
-  - intent: get_next_available
-  - action: action_get_next_available_flight
-  - action: utter_ask_if_the_new_flight_is_suitable
-  - intent: affirm
-  - action: action_change_flight
-- story: user want to change guide2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: help
-  - action: utter_help
-  - intent: guide_unavailable_or_delayed
-  - action: utter_offer_change_guide
-  - intent: affirm
-  - action: action_change_guide
-- story: user want to change guide
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: guide_unavailable_or_delayed
-  - action: utter_offer_change_guide
-  - intent: travel_alone
-  - action: action_offer_coupon
-- story: hotel not available1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: hotel_unavailable
-  - action: utter_ask_if_want_new_room
-  - intent: affirm
-  - action: action_find_new_room
-  - action: utter_ask_if_the_new_room_is_suitable
-  - intent: deny
-  - action: action_find_new_room
-  - action: utter_ask_if_the_new_room_is_suitable
-  - intent: affirm
-  - action: action_change_new_room
-- story: hotel not available2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: hotel_unavailable
-  - action: utter_ask_if_want_new_room
-  - or:
-    - intent: deny
-    - intent: customer_book_hotel
-  - action: utter_offer_refound_for_hotel
-- story: hotel not available3
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: hotel_unavailable
-  - action: utter_ask_if_want_new_room
-  - intent: affirm
-  - action: action_find_new_room
-  - action: utter_ask_if_the_new_room_is_suitable
-  - intent: deny
-  - action: action_find_new_room
-  - action: utter_ask_if_the_new_room_is_suitable
-  - or:
-    - intent: customer_book_hotel
-    - intent: stop
-  - action: utter_offer_refound_for_hotel
-- story: user ask for company and contact information
-  steps:
-  - intent: greet
-  - action: utter_greet
   - intent: ask_for_company_info
   - action: action_query_company_info
   - intent: ask_for_company_contact
   - action: action_query_company_contact
   - intent: thank
   - action: utter_you_are_welcome
-- story: greet and ask for packages by country
+
+- story: guide not unavailable
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: greet
-  - action: utter_greet
-  - intent: greet
-  - action: utter_greet
-  - intent: greet
-  - action: utter_greet
-  - intent: ask_for_package_by_country
-  - action: action_query_country_specific_packages
-- story: Story from Conversation ID 13729eecb0ed4ae98eb6bcf1ac73be3f
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: ask_for_package_by_country
-    entities:
-    - country: France
-  - action: action_query_country_specific_packages
-  - intent: inform
-    entities:
-    - destination: Mont Saint-Michel
-  - slot_was_set:
-    - destination: Mont Saint-Michel
+  - intent: guide_unavailable_or_delayed
   - action: action_login_or_register
   - slot_was_set:
-    - last_intent: inform
+    - last_intent: guide_unavailable_or_delayed
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_change_guide
+  - intent: affirm
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kalovy Vary
+      - Madrid
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Madrid
+  - slot_was_set:
+    - target_destination: Madrid
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_change_guide
+  - slot_was_set:
+    - target_destination: null
+
+- story: guide not unavailable2
+  steps:
+  - intent: guide_unavailable_or_delayed
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: guide_unavailable_or_delayed
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_change_guide
+  - intent: affirm
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kalovy Vary
+      - Madrid
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Madrid
+  - slot_was_set:
+    - target_destination: Madrid
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_change_guide
+  - slot_was_set:
+    - target_destination: null
+
+- story: room not unavailable
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: hotel_unavailable
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: hotel_unavailable
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_ask_if_want_new_room
+  - intent: affirm
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kalovy Vary
+      - Madrid
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Madrid
+  - slot_was_set:
+    - target_destination: Madrid
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 8
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: affirm
+  - action: action_change_new_room
+  - slot_was_set:
+    - undesired_hotel_ids: []
+  - slot_was_set:
+    - no_available_room: false
+  - slot_was_set:
+    - target_destination: null
+  - intent: thank
+  - action: utter_you_are_welcome
+
+- story: room not unavailable2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: hotel_unavailable
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: hotel_unavailable
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_ask_if_want_new_room
+  - intent: affirm
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kalovy Vary
+      - Madrid
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Kalovy Vary
+  - slot_was_set:
+    - target_destination: Kalovy Vary
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 3
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: deny
+  - action: utter_should_find_another_one
+  - intent: affirm
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 3
+      - 2
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: ask_for_another
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 3
+      - 2
+      - 1
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: affirm
+  - action: action_change_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 3
+      - 2
+  - slot_was_set:
+    - no_available_room: false
+  - slot_was_set:
+    - target_destination: null
+  - intent: thank
+  - action: utter_you_are_welcome
+
+- story: change filght1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: flight_delays_or_cancellation
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: flight_delays_or_cancellation
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_next_available_or_cancel
+  - intent: get_next_available
+    entities:
+    - last_intent: get_next_available
+  - slot_was_set:
+    - last_intent: get_next_available
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kalovy Vary
+      - Madrid
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Madrid
+  - slot_was_set:
+    - target_destination: Madrid
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_get_next_available_flight
+  - slot_was_set:
+    - undesired_flight_ids:
+      - 1
+      - 2
+  - action: utter_ask_if_the_new_flight_is_suitable
+  - intent: affirm
+  - action: action_change_flight
+  - slot_was_set:
+    - undesired_flight_ids:
+      - 1
+  - slot_was_set:
+    - no_available_flight: false
+  - slot_was_set:
+    - target_destination: null
+
+- story: change filght2
+  steps:
+  - intent: flight_delays_or_cancellation
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: flight_delays_or_cancellation
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_next_available_or_cancel
+  - intent: get_next_available
+    entities:
+    - last_intent: get_next_available
+  - slot_was_set:
+    - last_intent: get_next_available
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kalovy Vary
+      - Madrid
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Madrid
+  - slot_was_set:
+    - target_destination: Madrid
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_get_next_available_flight
+  - slot_was_set:
+    - undesired_flight_ids:
+      - 1
+      - 2
+  - action: utter_ask_if_the_new_flight_is_suitable
+  - intent: deny
+  - action: utter_should_find_another_one
+  - intent: affirm
+  - action: action_get_next_available_flight
+  - slot_was_set:
+    - undesired_flight_ids:
+      - 1
+      - 2
+      - 3
+  - action: utter_ask_if_the_new_flight_is_suitable
+  - intent: ask_for_another
+  - action: action_get_next_available_flight
+  - slot_was_set:
+    - undesired_flight_ids:
+      - 1
+      - 2
+      - 3
+      - 4
+  - action: utter_ask_if_the_new_flight_is_suitable
+  - intent: affirm
+  - action: action_change_flight
+  - slot_was_set:
+    - undesired_flight_ids:
+      - 1
+      - 2
+      - 3
+  - slot_was_set:
+    - no_available_flight: false
+  - slot_was_set:
+    - target_destination: null
+  - intent: thank
+  - action: utter_you_are_welcome
+
+- story: cancel trip1
+  steps:
+  - intent: flight_delays_or_cancellation
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: flight_delays_or_cancellation
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_next_available_or_cancel
+  - intent: cancel_trip
+    entities:
+    - last_intent: cancel_trip
+  - slot_was_set:
+    - last_intent: cancel_trip
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kalovy Vary
+      - Madrid
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Kalovy Vary
+  - slot_was_set:
+    - target_destination: Kalovy Vary
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_cancel_user_trip
+  - slot_was_set:
+    - target_destination: null
+
+- story: cancel trip2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: flight_delays_or_cancellation
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: flight_delays_or_cancellation
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_next_available_or_cancel
+  - intent: cancel_trip
+    entities:
+    - last_intent: cancel_trip
+  - slot_was_set:
+    - last_intent: cancel_trip
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Madrid
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Madrid
+  - slot_was_set:
+    - target_destination: Madrid
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_cancel_user_trip
+  - slot_was_set:
+    - target_destination: null
+  - intent: thank
+  - action: utter_you_are_welcome
+
+- story: book popular packages1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
+  - slot_was_set:
+    - showed_packages_ids:
+      - 12
+      - 5
+      - 10
+      - 15
+  - intent: book_package
+    entities:
+    - destination: Bangkok
+  - slot_was_set:
+    - destination: Bangkok
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: book_package
   - intent: register
   - action: register_form
   - active_loop: register_form
   - slot_was_set:
     - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason2
   - slot_was_set:
-    - username: Jason2
-  - action: register_form
+    - username: Jack4
   - slot_was_set:
-    - username: Jason2
+    - username: Jack4
   - slot_was_set:
     - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
   - slot_was_set:
     - password: '123456'
-  - action: register_form
   - slot_was_set:
     - password: '123456'
   - slot_was_set:
@@ -330,269 +591,129 @@ stories:
   - action: action_register_user
   - slot_was_set:
     - is_authenticated: true
-  - slot_was_set:
-    - username: Jason2
-  - slot_was_set:
-    - password: '123456'
+  - action: utter_confirm_book_package
+  - intent: affirm
   - action: action_create_user_order
   - slot_was_set:
     - destination: null
+  - slot_was_set:
+    - has_orders: true
   - intent: thank
   - action: utter_you_are_welcome
+
+- story: book popular packages2
+  steps:
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
+  - slot_was_set:
+    - showed_packages_ids:
+      - 12
+      - 5
+      - 10
+      - 15
+  - intent: book_package
+    entities:
+    - destination: Hokkaido
+  - slot_was_set:
+    - destination: Hokkaido
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: book_package
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_confirm_book_package
+  - intent: affirm
+  - action: action_create_user_order
+  - slot_was_set:
+    - destination: null
+  - slot_was_set:
+    - has_orders: true
   - intent: goodbye
   - action: utter_goodbye
   - action: utter_if_want_give_feedback
   - intent: deny
   - action: utter_ok
-- story: Story from Conversation ID 2b6462926c264194a2ed27283bd73475
+
+- story: book by country
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: book_package
-  - action: action_login_or_register
-  - slot_was_set:
-    - last_intent: book_package
-  - intent: login
-  - action: login_form
-  - active_loop: login_form
-  - slot_was_set:
-    - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason
-  - slot_was_set:
-    - username: Jason
-  - action: login_form
-  - slot_was_set:
-    - username: Jason
-  - slot_was_set:
-    - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
-  - slot_was_set:
-    - password: '123456'
-  - action: login_form
-  - slot_was_set:
-    - password: '123456'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_login_user
-  - intent: inform
-    entities:
-    - country: Japan
-  - action: action_query_country_specific_packages
-  - intent: inform
-    entities:
-    - destination: Hokkaido
-  - slot_was_set:
-    - destination: Hokkaido
-  - action: action_create_user_order
-  - slot_was_set:
-    - destination: null
-  - intent: thank
-  - action: utter_you_are_welcome
-  - intent: goodbye
-  - action: utter_goodbye
-  - action: utter_if_want_give_feedback
-  - intent: affirm
-  - action: utter_please_go_ahead
-  - intent: give_feedback
-  - action: utter_feedback_recorded
-  - action: utter_thank
-- story: Story from Conversation ID 058c42be7e7642ebbe9d6a5edeecf69b
-  steps:
+  - intent: help
+  - action: utter_help
   - intent: ask_for_package_by_country
     entities:
-    - country: Thailand
+    - country: China
   - action: action_query_country_specific_packages
-  - intent: ask_for_shorter_duration
-    entities:
-    - destination: Bangkok
-  - slot_was_set:
-    - destination: Bangkok
-  - action: utter_short_can_be_arranged
-  - intent: affirm
-  - action: action_login_or_register
-  - slot_was_set:
-    - last_intent: affirm
-  - intent: login
-  - action: login_form
-  - active_loop: login_form
-  - slot_was_set:
-    - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason
-  - slot_was_set:
-    - username: Jason
-  - action: login_form
-  - slot_was_set:
-    - username: Jason
-  - slot_was_set:
-    - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
-  - slot_was_set:
-    - password: '123456'
-  - action: login_form
-  - slot_was_set:
-    - password: '123456'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_login_user
-  - slot_was_set:
-    - is_authenticated: true
-  - action: action_create_user_order
-  - slot_was_set:
-    - destination: null
-- story: Story from Conversation ID 31ab37e892814be3af63aaa9529f5b83
-  steps:
-  - intent: book_package
-  - action: action_login_or_register
-  - slot_was_set:
-    - last_intent: book_package
-  - intent: login
-  - action: login_form
-  - active_loop: login_form
-  - slot_was_set:
-    - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason
-  - slot_was_set:
-    - username: Jason
-  - action: login_form
-  - slot_was_set:
-    - username: Jason
-  - slot_was_set:
-    - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
-  - slot_was_set:
-    - password: '123456'
-  - action: login_form
-  - slot_was_set:
-    - password: '123456'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_login_user
-  - slot_was_set:
-    - is_authenticated: true
-  - intent: ask_for_package_by_country
-    entities:
-    - country: czech Republic
-  - action: action_query_country_specific_packages
-  - intent: book_package
-    entities:
-    - destination: Kalovy Vary
-  - slot_was_set:
-    - destination: Kalovy Vary
-  - action: book_package_form
-  - active_loop: book_package_form
-  - slot_was_set:
-    - destination: Kalovy Vary
-  - slot_was_set:
-    - destination: Kalovy Vary
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_create_user_order
-  - slot_was_set:
-    - destination: null
-  - intent: thank
-  - action: utter_you_are_welcome
-- story: Story from Conversation ID caf34b30fb914c25a951ba133074168b
-  steps:
-  - intent: guide_unavailable_or_delayed
-  - action: utter_offer_change_guide
-  - intent: affirm
-  - action: action_change_guide
-- story: Story from Conversation ID 95ef81620cbb44cf97a7debc516b607e
-  steps:
-  - intent: hotel_unavailable
-  - action: utter_ask_if_want_new_room
-  - intent: affirm
-  - action: action_find_new_room
-  - action: utter_ask_if_the_new_room_is_suitable
-  - intent: affirm
-  - action: action_change_new_room
-- story: Story from Conversation ID 93d98ed418904a449067a69ade1fa3c4
-  steps:
-  - intent: flight_delays_or_cancellation
-  - action: utter_offer_next_available_or_cancel
-  - intent: get_next_available
-  - action: action_get_next_available_flight
-  - action: utter_ask_if_the_new_flight_is_suitable
-  - intent: affirm
-  - action: action_change_flight
-- story: Story from Conversation ID 67b2ab838e734f86978efbfb20595b85
-  steps:
-  - intent: book_package
-  - action: action_login_or_register
-  - slot_was_set:
-    - last_intent: book_package
-  - intent: register
-  - action: register_form
-  - active_loop: register_form
-  - slot_was_set:
-    - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason4
-  - slot_was_set:
-    - username: Jason4
-  - action: register_form
-  - slot_was_set:
-    - username: Jason4
-  - slot_was_set:
-    - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
-  - slot_was_set:
-    - password: '123456'
-  - action: register_form
-  - slot_was_set:
-    - password: '123456'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_register_user
-  - slot_was_set:
-    - is_authenticated: true
-  - slot_was_set:
-    - username: Jason4
-  - slot_was_set:
-    - password: '123456'
   - intent: ask_for_package_by_country
     entities:
     - country: Spain
   - action: action_query_country_specific_packages
   - intent: book_package
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: book_package
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_ask_where
+  - intent: ask_for_package_by_country
+    entities:
+    - country: Spain
+  - action: action_query_country_specific_packages
+  - intent: inform
     entities:
     - destination: Madrid
   - slot_was_set:
     - destination: Madrid
-  - action: book_package_form
-  - active_loop: book_package_form
-  - slot_was_set:
-    - destination: Madrid
-  - slot_was_set:
-    - destination: Madrid
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
   - action: action_create_user_order
   - slot_was_set:
     - destination: null
-- story: Story from Conversation ID d15b8bf9607a4781908a52e05ae855f9
+  - slot_was_set:
+    - has_orders: true
+
+- story: query user orders
   steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
   - intent: ask_user_orders
   - action: action_login_or_register
   - slot_was_set:
@@ -602,22 +723,14 @@ stories:
   - active_loop: login_form
   - slot_was_set:
     - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason
   - slot_was_set:
-    - username: Jason
-  - action: login_form
+    - username: Jack2
   - slot_was_set:
-    - username: Jason
+    - username: Jack2
   - slot_was_set:
     - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
   - slot_was_set:
     - password: '123456'
-  - action: login_form
   - slot_was_set:
     - password: '123456'
   - slot_was_set:
@@ -626,115 +739,66 @@ stories:
   - action: action_login_user
   - slot_was_set:
     - is_authenticated: true
-- story: Story from Conversation ID 8252594bf5bf414b976323ec1d941589
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Madrid
+      - Bangkok
+
+- story: give feedback1
   steps:
-  - intent: ask_for_popular_packages
-  - action: action_query_popular_packages
-  - intent: ask_for_package_by_country
+  - intent: give_feedback
+  - action: utter_please_go_ahead
+  - intent: give_feedback
     entities:
-    - country: China
-  - action: action_query_country_specific_packages
-  - intent: ask_for_package_by_country
+    - feedback: the food on the flight is disgusting
+  - slot_was_set:
+    - feedback: the food on the flight is disgusting
+  - action: utter_feedback_recorded
+  - action: utter_thank
+
+- story: give feedback2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: give_feedback
     entities:
-    - country: Italy
-  - action: action_query_country_specific_packages
+    - feedback: the hotel arranged is too far from the attractions
+  - slot_was_set:
+    - feedback: the hotel arranged is too far from the attractions
+  - action: utter_feedback_recorded
+  - action: utter_thank
+  - intent: more_feedback
+  - action: utter_please_go_ahead
+  - intent: give_feedback
+    entities:
+    - feedback: The car rental driver is not friendly
+  - slot_was_set:
+    - feedback: The car rental driver is not friendly
+  - action: utter_feedback_recorded
+  - action: utter_thank
+
+- story: book popular packages3
+  steps:
   - intent: book_package
-    entities:
-    - destination: Pompeii
-  - slot_was_set:
-    - destination: Pompeii
   - action: action_login_or_register
   - slot_was_set:
-    - last_intent: ask_for_package_by_country
-  - intent: register
-  - action: register_form
-  - active_loop: register_form
-  - slot_was_set:
-    - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jackson1
-  - slot_was_set:
-    - username: Jackson1
-  - action: register_form
-  - slot_was_set:
-    - username: Jackson1
-  - slot_was_set:
-    - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
-  - slot_was_set:
-    - password: '123456'
-  - action: register_form
-  - slot_was_set:
-    - password: '123456'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_register_user
-  - slot_was_set:
-    - is_authenticated: true
-  - slot_was_set:
-    - username: Jackson1
-  - slot_was_set:
-    - password: '123456'
-  - action: action_create_user_order
-  - slot_was_set:
-    - destination: null
-- story: Story from Conversation ID a87b064f178e451b8f14deb23d5e36f5
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: flight_delays_or_cancellation
-  - action: utter_offer_next_available_or_cancel
-  - intent: get_next_available
-  - action: action_get_next_available_flight
-  - action: utter_ask_if_the_new_flight_is_suitable
-  - intent: deny
-  - action: utter_should_find_another_one
-  - intent: affirm
-  - action: action_get_next_available_flight
-  - action: utter_ask_if_the_new_flight_is_suitable
-  - intent: affirm
-  - action: action_change_flight
-- story: Story from Conversation ID 243f56e3a6974edc82a99a3388ffd927
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: ask_for_package_by_country
-    entities:
-    - country: france
-  - action: action_query_country_specific_packages
-  - intent: inform
-    entities:
-    - destination: Mont Saint-Michel
-  - slot_was_set:
-    - destination: Mont Saint-Michel
-  - action: action_login_or_register
-  - slot_was_set:
-    - last_intent: inform
+    - last_intent: book_package
   - intent: login
   - action: login_form
   - active_loop: login_form
   - slot_was_set:
     - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason
   - slot_was_set:
-    - username: Jason
-  - action: login_form
+    - username: Jack2
   - slot_was_set:
-    - username: Jason
+    - username: Jack2
   - slot_was_set:
     - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
   - slot_was_set:
     - password: '123456'
-  - action: login_form
   - slot_was_set:
     - password: '123456'
   - slot_was_set:
@@ -743,12 +807,12 @@ stories:
   - action: action_login_user
   - slot_was_set:
     - is_authenticated: true
-  - action: action_default_fallback
+  - action: utter_ask_where
   - intent: ask_for_package_by_country
     entities:
-    - country: france
+    - country: France
   - action: action_query_country_specific_packages
-  - intent: inform
+  - intent: book_package
     entities:
     - destination: Mont Saint-Michel
   - slot_was_set:
@@ -762,34 +826,26 @@ stories:
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
+  - action: utter_confirm_book_package
+  - intent: affirm
   - action: action_create_user_order
   - slot_was_set:
     - destination: null
-- story: Story from Conversation ID c56ee4cb42314826ae83e222dbb3d7b6
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: hotel_unavailable
-  - action: utter_ask_if_want_new_room
-  - intent: affirm
-  - action: action_find_new_room
   - slot_was_set:
-    - undesired_hotel_ids:
-      - 2
-  - action: utter_ask_if_the_new_room_is_suitable
-  - intent: deny
-  - action: action_find_new_room
+    - has_orders: true
+  - intent: ask_user_orders
+  - action: action_query_user_orders
   - slot_was_set:
-    - undesired_hotel_ids:
-      - 2
-      - 1
-  - action: utter_ask_if_the_new_room_is_suitable
-  - intent: deny
-  - action: action_find_new_room
+    - has_orders: true
   - slot_was_set:
-    - no_available_room: true
-  - action: utter_offer_refound_for_hotel
-- story: Story from Conversation ID de51d027af124e8f821020fd524caf8f
+    - orders:
+      - Madrid
+      - Mont Saint-Michel
+      - Bangkok
+  - intent: thank
+  - action: utter_you_are_welcome
+
+- story: book popular packages4
   steps:
   - intent: greet
   - action: utter_greet
@@ -853,35 +909,188 @@ stories:
   - action: action_query_popular_packages
   - slot_was_set:
     - no_more_packages: true
+  - intent: ask_for_more_packages_suggestions
+  - action: action_query_popular_packages
+  - slot_was_set:
+    - no_more_packages: true
   - intent: book_package
     entities:
-    - destination: Praha
+    - destination: Kobe
   - slot_was_set:
-    - destination: Praha
+    - destination: Kobe
   - action: action_login_or_register
   - slot_was_set:
     - last_intent: book_package
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_confirm_book_package
+  - intent: affirm
+  - action: action_create_user_order
+  - slot_was_set:
+    - destination: null
+  - slot_was_set:
+    - has_orders: true
+  - intent: thank
+  - action: utter_you_are_welcome
+  - intent: goodbye
+  - action: utter_goodbye
+  - action: utter_if_want_give_feedback
+  - intent: affirm
+  - action: utter_please_go_ahead
+  - intent: give_feedback
+    entities:
+    - feedback: your response time is way too long
+  - slot_was_set:
+    - feedback: your response time is way too long
+  - action: utter_feedback_recorded
+  - action: utter_thank
+  - intent: more_feedback
+  - action: utter_please_go_ahead
+  - intent: give_feedback
+    entities:
+    - feedback: maybe you can sound more lively rather than stay this dull
+  - slot_was_set:
+    - feedback: maybe you can sound more lively rather than stay this dull
+  - action: utter_feedback_recorded
+  - action: utter_thank
+
+- story: user want to cancel trip directly
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: cancel_trip
+  - action: utter_cannot_unless_flight_unavailable
+  - intent: flight_delays_or_cancellation
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: flight_delays_or_cancellation
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_next_available_or_cancel
+  - intent: cancel_trip
+    entities:
+    - last_intent: cancel_trip
+  - slot_was_set:
+    - last_intent: cancel_trip
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Madrid
+      - Mont Saint-Michel
+      - Bangkok
+      - Kobe
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Kobe
+  - slot_was_set:
+    - target_destination: Kobe
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_cancel_user_trip
+  - slot_was_set:
+    - target_destination: null
+
+- story: book by country2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
+  - slot_was_set:
+    - showed_packages_ids:
+      - 12
+      - 5
+      - 10
+      - 15
+  - intent: ask_for_more_packages_suggestions
+  - action: action_query_popular_packages
+  - slot_was_set:
+    - showed_packages_ids:
+      - 12
+      - 5
+      - 10
+      - 15
+      - 7
+      - 2
+      - 9
+      - 11
+  - intent: ask_for_package_by_country
+    entities:
+    - country: U.S
+  - action: action_query_country_specific_packages
+  - intent: ask_for_package_by_country
+    entities:
+    - country: Italy
+  - action: action_query_country_specific_packages
+  - intent: inform
+    entities:
+    - destination: Pompeii
+  - slot_was_set:
+    - destination: Pompeii
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: inform
   - intent: register
   - action: register_form
   - active_loop: register_form
   - slot_was_set:
     - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jack3
   - slot_was_set:
-    - username: Jack3
-  - action: register_form
+    - username: Anna
   - slot_was_set:
-    - username: Jack3
+    - username: Anna
   - slot_was_set:
     - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
   - slot_was_set:
     - password: '123456'
-  - action: register_form
   - slot_was_set:
     - password: '123456'
   - slot_was_set:
@@ -890,29 +1099,593 @@ stories:
   - action: action_register_user
   - slot_was_set:
     - is_authenticated: true
-  - slot_was_set:
-    - username: Jack3
-  - slot_was_set:
-    - password: '123456'
+  - action: utter_confirm_book_package
   - intent: affirm
   - action: action_create_user_order
   - slot_was_set:
     - destination: null
-- story: Story from Conversation ID 84f19f61b82745159b1f8763036d9603
+  - slot_was_set:
+    - has_orders: true
+
+- story: book shorter package
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: flight_delays_or_cancellation
-  - action: utter_offer_next_available_or_cancel
-  - intent: get_next_available
-  - action: action_get_next_available_flight
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
   - slot_was_set:
-    - undesired_flight_ids:
-      - 1
-  - action: utter_ask_if_the_new_flight_is_suitable
+    - showed_packages_ids:
+      - 12
+      - 5
+      - 10
+      - 15
+  - intent: ask_for_shorter_duration
+    entities:
+    - destination: Hokkaido
+  - slot_was_set:
+    - destination: Hokkaido
+  - action: utter_short_can_be_arranged
+  - intent: book_package
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: book_package
+  - intent: register
+  - action: register_form
+  - active_loop: register_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack6
+  - slot_was_set:
+    - username: Jack6
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_register_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_confirm_book_package
+  - intent: affirm
+  - action: action_create_user_order
+  - slot_was_set:
+    - destination: null
+  - slot_was_set:
+    - has_orders: true
+
+- story: bot don't understand
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+
+
+- story: offer coupon1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: guide_unavailable_or_delayed
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: guide_unavailable_or_delayed
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_change_guide
+  - intent: travel_alone
+  - action: action_offer_coupon
+
+- story: offer coupon2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: guide_unavailable_or_delayed
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: guide_unavailable_or_delayed
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_change_guide
+  - intent: deny
+  - action: action_offer_coupon
+
+- story: offer refound1
+  steps:
+  - intent: hotel_unavailable
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: hotel_unavailable
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_ask_if_want_new_room
+  - intent: affirm
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Madrid
+      - Mont Saint-Michel
+      - Chiangmai
+      - Bangkok
+      - Lucerne
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Bangkok
+  - slot_was_set:
+    - target_destination: Bangkok
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 19
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: deny
+  - action: utter_should_find_another_one
+  - intent: deny
+  - action: utter_offer_refound_for_hotel
+
+- story: offer refound2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: hotel_unavailable
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: hotel_unavailable
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_ask_if_want_new_room
+  - intent: deny
+  - action: utter_offer_refound_for_hotel
+
+- story: book package1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_help
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
+  - slot_was_set:
+    - showed_packages_ids:
+      - 12
+      - 5
+      - 10
+      - 15
+  - intent: ask_for_more_packages_suggestions
+  - action: action_query_popular_packages
+  - slot_was_set:
+    - showed_packages_ids:
+      - 12
+      - 5
+      - 10
+      - 15
+      - 7
+      - 2
+      - 9
+      - 11
+  - intent: ask_for_package_by_country
+    entities:
+    - country: Japan
+  - action: action_query_country_specific_packages
+  - intent: ask_for_shorter_duration
+    entities:
+    - destination: Kobe
+  - slot_was_set:
+    - destination: Kobe
+  - action: utter_short_can_be_arranged
+  - intent: ask_about_guide_hotel_and_car_rental
+  - action: utter_detail_about_guide_hotel_and_car_rental
+  - intent: understood
+  - intent: book_package
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: book_package
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jason
+  - slot_was_set:
+    - username: Jason
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_confirm_book_package
+  - intent: affirm
+  - action: action_create_user_order
+  - slot_was_set:
+    - destination: null
+  - slot_was_set:
+    - has_orders: true
+
+- story: book package2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_for_popular_packages
+  - action: action_query_popular_packages
+  - slot_was_set:
+    - showed_packages_ids:
+      - 12
+      - 5
+      - 10
+      - 15
+  - intent: book_package
+    entities:
+    - destination: Bangkok
+  - slot_was_set:
+    - destination: Bangkok
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: book_package
+  - intent: register
+  - action: register_form
+  - active_loop: register_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_register_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_confirm_book_package
+  - intent: deny
+  - action: utter_ok
+  - intent: ask_for_package_by_country
+    entities:
+    - country: China
+  - action: action_query_country_specific_packages
+  - intent: understood
+  - intent: ask_for_package_by_country
+    entities:
+    - country: Japan
+  - action: action_query_country_specific_packages
+  - intent: inform
+    entities:
+    - destination: Kobe
+  - slot_was_set:
+    - destination: Kobe
+  - action: action_create_user_order
+  - slot_was_set:
+    - destination: null
+  - slot_was_set:
+    - has_orders: true
+  - intent: thank
+  - action: utter_you_are_welcome
+
+- story: out of scope questions1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+  - intent: ask_for_human_assistant
+  - action: utter_request_human_assistant
+
+- story: out of scope questions2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - intent: ask_for_human_assistant
+  - action: utter_request_human_assistant
+
+- story: no more rooms
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: hotel_unavailable
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: hotel_unavailable
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_ask_if_want_new_room
+  - intent: affirm
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kobe
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Kobe
+  - slot_was_set:
+    - target_destination: Kobe
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 32
+  - action: utter_ask_if_the_new_room_is_suitable
   - intent: deny
   - action: utter_should_find_another_one
   - intent: affirm
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 32
+      - 2
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: deny
+  - action: utter_should_find_another_one
+  - intent: affirm
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 32
+      - 2
+      - 1
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: deny
+  - action: utter_should_find_another_one
+  - intent: affirm
+  - action: action_find_new_room
+  - slot_was_set:
+    - no_available_room: true
+  - action: utter_offer_refound_for_hotel
+
+- story: user do not want hotel anymore
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: hotel_unavailable
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: hotel_unavailable
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_ask_if_want_new_room
+  - intent: affirm
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kobe
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Kobe
+  - slot_was_set:
+    - target_destination: Kobe
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 31
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: deny
+  - action: utter_should_find_another_one
+  - intent: affirm
+  - action: action_find_new_room
+  - slot_was_set:
+    - undesired_hotel_ids:
+      - 31
+      - 1
+  - action: utter_ask_if_the_new_room_is_suitable
+  - intent: deny
+  - action: utter_should_find_another_one
+  - intent: deny
+  - action: utter_offer_refound_for_hotel
+
+- story: no more flights
+  steps:
+  - intent: flight_delays_or_cancellation
+  - action: action_login_or_register
+  - slot_was_set:
+    - last_intent: flight_delays_or_cancellation
+  - intent: login
+  - action: login_form
+  - active_loop: login_form
+  - slot_was_set:
+    - requested_slot: username
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - username: Jack2
+  - slot_was_set:
+    - requested_slot: password
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - password: '123456'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_login_user
+  - slot_was_set:
+    - is_authenticated: true
+  - action: utter_offer_next_available_or_cancel
+  - intent: get_next_available
+    entities:
+    - last_intent: get_next_available
+  - slot_was_set:
+    - last_intent: get_next_available
+  - action: action_query_user_orders
+  - slot_was_set:
+    - has_orders: true
+  - slot_was_set:
+    - orders:
+      - Kobe
+  - action: target_destination_form
+  - active_loop: target_destination_form
+  - slot_was_set:
+    - requested_slot: target_destination
+  - slot_was_set:
+    - destination: Kobe
+  - slot_was_set:
+    - target_destination: Kobe
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
   - action: action_get_next_available_flight
   - slot_was_set:
     - undesired_flight_ids:
@@ -986,81 +1759,6 @@ stories:
   - slot_was_set:
     - no_available_flight: true
   - intent: cancel_trip
-  - action: utter_confirm_if_cancel
-  - intent: affirm
   - action: action_cancel_user_trip
-- story: Story from Conversation ID c2dd92c543184952af4743aa282d6ff4
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: help
-  - action: utter_help
-  - intent: ask_for_company_contact
-  - action: action_query_company_contact
-  - intent: ask_for_popular_packages
-  - action: action_query_popular_packages
   - slot_was_set:
-    - showed_packages_ids:
-      - 12
-      - 5
-      - 10
-      - 15
-  - intent: ask_for_package_by_country
-    entities:
-    - country: Japan
-  - action: action_query_country_specific_packages
-  - intent: book_package
-    entities:
-    - destination: Kobe
-  - slot_was_set:
-    - destination: Kobe
-  - action: action_login_or_register
-  - slot_was_set:
-    - last_intent: book_package
-  - intent: register
-  - action: register_form
-  - active_loop: register_form
-  - slot_was_set:
-    - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason
-  - slot_was_set:
-    - username: Jason
-  - action: register_form
-  - slot_was_set:
-    - username: null
-  - slot_was_set:
-    - requested_slot: username
-  - intent: inform
-    entities:
-    - username: Jason123
-  - slot_was_set:
-    - username: Jason123
-  - action: register_form
-  - slot_was_set:
-    - username: Jason123
-  - slot_was_set:
-    - requested_slot: password
-  - intent: inform
-    entities:
-    - password: '123456'
-  - slot_was_set:
-    - password: '123456'
-  - action: register_form
-  - slot_was_set:
-    - password: '123456'
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_register_user
-  - slot_was_set:
-    - is_authenticated: true
-  - slot_was_set:
-    - username: Jason123
-  - slot_was_set:
-    - password: '123456'
-  - intent: affirm
-  - action: action_create_user_order
-  - slot_was_set:
-    - destination: null
+    - target_destination: null

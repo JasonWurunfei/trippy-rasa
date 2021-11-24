@@ -3,7 +3,7 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet, FollowupAction
 import requests
 import random
 import re
@@ -62,8 +62,7 @@ class ValidateRegisterForm(FormValidationAction):
                 dispatcher.utter_message(f"ok, so your username is {username}")
                 return {"username": username}
             else:
-                dispatcher.utter_message(f"The username '{username}' is used by others, \
-                    please choose another one.")
+                dispatcher.utter_message(f"The username '{username}' is used by others, please choose another one.")
                 return {"username": None}
         else:
             dispatcher.utter_message(f"Sorry, username '{username}' is not acceptable.")
@@ -84,6 +83,32 @@ class ValidateRegisterForm(FormValidationAction):
         else:
             dispatcher.utter_message(f"Sorry, password '{password}' is not acceptable.")
             return {"password": None}
+
+class ValidateTargetDestinationForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_target_destination_form"
+    
+    def validate_target_destination(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        destination = slot_value
+        destinations = tracker.get_slot("orders")
+        if destination.title() not in destinations:
+            allowed_destinations = ", ".join(destinations)
+            dispatcher.utter_message(text=
+                f"Sorry, you only have package(s) to {allowed_destinations}. Please choose one.", 
+                buttons =[
+                    {"payload": f"/inform\{destination: {destination}\}", "title": destination} \
+                    for destination in destinations
+                ])
+            return {"target_destination": None}
+        
+        dispatcher.utter_message(text=f"ok, you want to choose the {destination} package.")
+        return {"target_destination": destination.title()}
 
 class ValidateBookPackageForm(FormValidationAction):
     def name(self) -> Text:
@@ -119,8 +144,7 @@ class LoginOrRegister(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         dispatcher.utter_message(
-            text="I need to know your user account to proceed, \
-                do you want to login with existing account or register a new one?",
+            text="I need to know your user account to proceed, do you want to login with existing account or register a new one?",
             buttons= [
                 {"payload": f"/login", "title": "Login"},
                 {"payload": f"/register", "title": "Register"},
@@ -144,7 +168,7 @@ class CreateUserOrder(Action):
 
         r = requests.get(f'{config["DB_API_ADDRESS"]}/package/destination', 
                         params={"destination": destination})
-        package = r.json()['packages'][0]
+        package = r.json()['package'][0]
         r = requests.post(f'{config["DB_API_ADDRESS"]}/order', 
                     json = {
                         "username": username,
@@ -154,16 +178,11 @@ class CreateUserOrder(Action):
             dispatcher.utter_message(f"Your order to {destination} is created!")
             guide = package['guide']
             dispatcher.utter_message(
-                f"Your guide of the tour is {guide['name']}, his/her phone number is {guide['phone_number']} \
-                and his/her email is {guide['email']}, the guide will give you guided tours of major landmarks \
-                and venues. This is included in the package so it's free.")
+                f"Your guide of the tour is {guide['name']}, his/her phone number is {guide['phone_number']} and his/her email is {guide['email']}, the guide will give you guided tours of major landmarks and venues. This is included in the package so it's free.")
             hotel = package['hotel']
-            dispatcher.utter_message(f"We have also secure a hotel room for you at {hotel['name']} with \
-                our special discount, you only need to pay anthor ${hotel['price']} to book the room.")
+            dispatcher.utter_message(f"We have also secure a hotel room for you at {hotel['name']} with our special discount, you only need to pay anthor ${hotel['price']} to book the room.")
             car_rental = package['car_rental']
-            dispatcher.utter_message(f"We also help you find a good car rental comany which is \
-                provided by {car_rental['name']} at a cost of only ${car_rental['price']}. \
-                It is also much cheaper than their normal price.")
+            dispatcher.utter_message(f"We also help you find a good car rental company which is provided by {car_rental['name']} at a cost of only ${car_rental['price']}. It is also much cheaper than their normal price.")
             dispatcher.utter_message(f"Have a fantastic trip!")
         elif r.status_code == requests.codes.bad_request:
             dispatcher.utter_message(
@@ -171,7 +190,7 @@ class CreateUserOrder(Action):
         else:
             dispatcher.utter_message(
                 f"Sorry, something went wrong during order creation.")
-        return [SlotSet("destination", None)]
+        return [SlotSet("destination", None), SlotSet("has_orders", True)]
         
 
 
@@ -230,31 +249,39 @@ class LoginUser(Action):
             dispatcher.utter_message(f"Hi {username}")
             last_intent = tracker.get_slot("last_intent")
             destination = tracker.get_slot("destination")
+            evts = [SlotSet("is_authenticated", True)]
             if last_intent == "book_package":
                 if destination:
-                    dispatcher.utter_message(f"You were saying you want to buy the trip to {destination}, \
-                        is that correct?")
+                    evts.append(FollowupAction(name="utter_confirm_book_package"))
                 else:
-                    dispatcher.utter_message("We offer packages to Switzerland, Japan, Thailand, \
-                        South Korea, Czech Republic, France, Italy, and Spain. Where do you want to go?")
-            else:
-                if last_intent == "ask_user_orders":
-                    r = requests.get(f'{config["DB_API_ADDRESS"]}/user/orders', 
-                        params={"username": username})
-                    packages = r.json()
-                    dispatcher.utter_message("you've ordered the following:")
-                    for i, package in enumerate(packages, 1):
-                        dispatcher.utter_message(
-                            f"{i} {package['title']} [Country: {package['country']}, \
-                            Destination: {package['destination']}]")
-                else:
-                    dispatcher.utter_message("How can I help?")
-            return [SlotSet("is_authenticated", True)]
-        
+                    evts.append(FollowupAction(name="utter_ask_where"))
+
+            elif last_intent == "guide_unavailable_or_delayed":
+                evts.append(FollowupAction(name="utter_offer_change_guide"))
+
+            elif last_intent == "flight_delays_or_cancellation":
+                evts.append(FollowupAction(name="utter_offer_next_available_or_cancel"))
+
+            elif last_intent == "hotel_unavailable":
+                evts.append(FollowupAction(name="utter_ask_if_want_new_room"))
+
+            elif last_intent == "ask_user_orders":
+                evts.append(FollowupAction(name="action_query_user_orders"))
+            
+            elif last_intent == "inform":
+                if destination:
+                    evts.append(FollowupAction(name="utter_confirm_book_package"))
+            
+            return evts
+            
         else:
             dispatcher.utter_message(f"Sorry, it seems that the username or the password is not vaild.")
             dispatcher.utter_message(response="login_form")
-            return [SlotSet("username", None), SlotSet("password", None)]
+            return [
+                SlotSet("is_authenticated", False),
+                SlotSet("username", None), 
+                SlotSet("password", None)
+            ]
 
 class RegisterUser(Action):
     def name(self) -> Text:
@@ -277,24 +304,36 @@ class RegisterUser(Action):
             dispatcher.utter_message(f"Hi {username}")
             last_intent = tracker.get_slot("last_intent")
             destination = tracker.get_slot("destination")
+
+            evts = [SlotSet("is_authenticated", True)]
             if last_intent == "book_package":
                 if destination:
-                    dispatcher.utter_message(f"You were saying you want to buy the trip to {destination}, \
-                        is that correct?")
+                    evts.append(FollowupAction(name="utter_confirm_book_package"))
                 else:
-                    dispatcher.utter_message("We offer packages to Switzerland, Japan, \
-                        Thailand, South Korea, Czech Republic, France, Italy, and Spain. \
-                        Where do you want to go?")
-            else:
-                dispatcher.utter_message("How can I help?")
-            return [
-                SlotSet("is_authenticated", True),
-                SlotSet("username", username), 
-                SlotSet("password", password)
-            ]
+                    evts.append(FollowupAction(name="utter_ask_where"))
+
+            elif last_intent == "guide_unavailable_or_delayed":
+                evts.append(FollowupAction(name="utter_offer_change_guide"))
+
+            elif last_intent == "flight_delays_or_cancellation":
+                evts.append(FollowupAction(name="utter_offer_next_available_or_cancel"))
+
+            elif last_intent == "hotel_unavailable":
+                evts.append(FollowupAction(name="utter_ask_if_want_new_room"))
+
+            elif last_intent == "ask_user_orders":
+                evts.append(FollowupAction(name="action_query_user_orders"))
+            
+            elif last_intent == "inform":
+                if destination:
+                    evts.append(FollowupAction(name="utter_confirm_book_package"))
+
+            return evts
+
         else:
-            dispatcher.utter_message(f"The username '{username}' is taken, please choose another one")
+            dispatcher.utter_message(f"There is something wrong during the process please contact Trippy if you need more information")
             return [
+                SlotSet("is_authenticated", False),
                 SlotSet("username", None), 
                 SlotSet("password", None),
             ]
@@ -317,10 +356,9 @@ class CancelUserTrip(Action):
                                 "destination": destination
                             })
         if r.status_code == requests.codes.ok:
-            dispatcher.utter_message("trip canceled")
+            dispatcher.utter_message(f"Your trip to {destination} is canceled, have a good day!")
         elif r.status_code == requests.codes.not_found:
-            dispatcher.utter_message("Can not find your package order. \
-                Please contact trippy directly.")
+            dispatcher.utter_message("Can not find your package order. Please contact trippy directly.")
         else:
             dispatcher.utter_message(
                 "Sorry, something wrong happened during cancelation")
@@ -347,9 +385,7 @@ class QueryAvailableFlight(Action):
         flight = r.json()['new_flight']
         if flight:
             dispatcher.utter_message(
-                f"I've found the next availble flight offered by {flight['airline']} \
-                which will take off in {flight['departure_time']} hours at departure port \
-                No.{flight['departure_port']}")
+                f"I've found the next availble flight offered by {flight['airline']} which will take off in {flight['departure_time']} hours at departure port No.{flight['departure_port']}")
             undesired_flight_ids.append(flight['id'])
             return [SlotSet("undesired_flight_ids", undesired_flight_ids)]
         else:
@@ -380,8 +416,7 @@ class ChangeFlight(Action):
                 })
         if r.status_code == requests.codes.ok:
             dispatcher.utter_message(
-                "Flight changed! Your boarding pass can be print at the airport \
-                lounge. Have a safe flight.")
+                "Flight changed! Your boarding pass can be print at the airport lounge. Have a safe flight.")
         elif r.status_code == requests.codes.not_found:
             dispatcher.utter_message(f"Sorry, you haven't ordered package to {destination}.")
         else:
@@ -406,15 +441,18 @@ class QueryUserOrders(Action):
         r = requests.get(f'{config["DB_API_ADDRESS"]}/user/orders', 
                         params={"username": username})
         packages = r.json()['packages']
-        dispatcher.utter_message("you've ordered the following:")
-        for i, package in enumerate(packages, 1):
+        if len(packages) > 0:
+            dispatcher.utter_message("you've ordered the following:")
+            for i, package in enumerate(packages, 1):
+                dispatcher.utter_message(
+                    f"{i} {package['title']} [Country: {package['country']}, Destination: {package['destination']}]")
+            orders = [package['destination'] for package in packages]
+            evts = [SlotSet("has_orders", True), SlotSet("orders", orders)]
+            return evts
+        else:
             dispatcher.utter_message(
-                f"{i} {package['title']} [Country: {package['country']}, \
-                Destination: {package['destination']}]")
-
-        return [SlotSet("orders", [
-            f"{package['title']} {package['country']} {package['destination']}" for package in packages
-        ])]
+                f"Sorry {username}, it seems that you haven't ordered anything trip yet.")
+            return [SlotSet("has_orders", False)]
 
 class ChangeGuide(Action):
     def name(self) -> Text:
@@ -434,9 +472,7 @@ class ChangeGuide(Action):
                 params={'destination': destination, 'username': username})
         new_guide = r.json()['new_guide']
 
-        dispatcher.utter_message(f"Ok, I have rearrange your guide, \
-            the new guide is {new_guide['name']} Phone: {new_guide['phone_number']} \
-            Email: {new_guide['email']}. Have a great trip!")
+        dispatcher.utter_message(f"Ok, I have rearrange your guide, the new guide is {new_guide['name']} Phone: {new_guide['phone_number']} Email: {new_guide['email']}. Have a great trip!")
 
         return [SlotSet("target_destination", None)]
 
@@ -457,9 +493,9 @@ class OfferCoupon(Action):
                                 "old_restaurant_name": "Unknown"
                             })
         restaurant = r.json()['new_restaurant']
-        dispatcher.utter_message(f"here is a coupon code you can use at {restaurant['name']}, \
-            which is a restaurant very close to your location, for your compensation")
+        dispatcher.utter_message(f"here is a coupon code you can use at {restaurant['name']}, which is a restaurant very close to your location, for your compensation")
         dispatcher.utter_message(f"Trippy@{restaurant['name']}{random.randint(4000,8000)}")
+        dispatcher.utter_message("Have a great trip!")
         return []
 
 class FindNewRoom(Action):
@@ -482,8 +518,7 @@ class FindNewRoom(Action):
                             })
         hotel = r.json()['new_hotel']
         if hotel:
-            dispatcher.utter_message(f"I've found a new hotel room at {hotel['name']}. \
-                Here are their contact information:")
+            dispatcher.utter_message(f"I've found a new hotel room at {hotel['name']}. Here are their contact information:")
             dispatcher.utter_message(f"Address: {hotel['address']}, Telephone: {hotel['telephone']}")
             dispatcher.utter_message(f"The room price is ${hotel['price']}")
             undesired_hotel_ids.append(hotel['id'])
@@ -515,7 +550,7 @@ class ChangeNewRoom(Action):
                     'hotel_id': hotel_id
                 })
         if r.status_code == requests.codes.ok:
-            dispatcher.utter_message("Okay, your room has been rearranged!")
+            dispatcher.utter_message("Okay, your room has been rearranged! Have a good one!")
         elif r.status_code == requests.codes.not_found:
             dispatcher.utter_message(f"Sorry, you haven't ordered package to {destination}.")
         else:
@@ -529,12 +564,10 @@ class ChangeNewRoom(Action):
 def utter_packages(dispatcher: CollectingDispatcher, packages: List[Dict]) -> None:
     for i, package in enumerate(packages, 1):
         dispatcher.utter_message(
-            text=f"#{i} {package['title']} | Country: {package['country']} | \
-            Destination: {package['destination']}",
+            text=f"#{i} {package['title']} | Country: {package['country']} | Destination: {package['destination']}",
             image=package['pic_url'])
         dispatcher.utter_message(f"Description: {package['description']}")
-        dispatcher.utter_message(f"The trip is {package['duration']} days long \
-            and the price is \${package['price']}")
+        dispatcher.utter_message(f"The trip is {package['duration']} days long and the price is \${package['price']}")
     dispatcher.utter_message("You can book a package by telling me the package destination.")
 
 class QueryCountrySpecificPackages(Action):
@@ -550,8 +583,7 @@ class QueryCountrySpecificPackages(Action):
         country = next(tracker.get_latest_entity_values("country"), None)
         if country.title() not in ALLOWED_COUNTRIES:
             allowed_countries = ", ".join(ALLOWED_COUNTRIES)
-            dispatcher.utter_message(f"We don't have travel package to {country}, \
-                but we do have packages to {allowed_countries}.")
+            dispatcher.utter_message(f"We don't have travel package to {country}, but we do have packages to {allowed_countries}.")
             return []
         
         r = requests.get(f'{config["DB_API_ADDRESS"]}/package/country', 
