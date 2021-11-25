@@ -127,7 +127,7 @@ responses:
       title: next available flight
     - payload: /cancel_trip{{"last_intent":"cancel_trip"}}
       title: cancel the trip
-    text: I can help you find the next available flight, or if you wish, I can cancel the whole trip on your behalf and provide refound. However, if you cancel the trip, we still need to charge 10% of the total price as service fee.
+    text: I can help you find the next available flight, or if you wish, I can cancel the whole trip on your behalf and provide refund. However, if you cancel the trip, we still need to charge 10% of the total price as service fee.
   utter_ask_if_the_new_flight_is_suitable:
   - text: Is this new flight suitable for you?
   utter_confirm_if_cancel:
@@ -138,8 +138,8 @@ responses:
   - text: Do you want to change to this new room instead?
   utter_ask_if_want_new_room:
   - text: I can help you find another room, would you like me to do that?
-  utter_offer_refound_for_hotel:
-  - text: The refound for the hotel room will be sent back to you at the end of your tour, have a nice trip!
+  utter_offer_refund_for_hotel:
+  - text: The refund for the hotel room will be sent back to you at the end of your tour, have a nice trip!
   utter_ask_destination:
   - text: you can tell me which package to book by telling me the destination of the package.
   utter_you_are_welcome:
@@ -214,7 +214,7 @@ actions:
 - utter_if_want_give_feedback
 - utter_offer_change_guide
 - utter_offer_next_available_or_cancel
-- utter_offer_refound_for_hotel
+- utter_offer_refund_for_hotel
 - utter_ok
 - utter_out_of_scope
 - utter_please_go_ahead

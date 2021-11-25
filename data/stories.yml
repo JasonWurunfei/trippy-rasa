@@ -1232,7 +1232,7 @@ stories:
   - intent: deny
   - action: action_offer_coupon
 
-- story: offer refound1
+- story: offer refund1
   steps:
   - intent: hotel_unavailable
   - action: action_login_or_register
@@ -1290,9 +1290,9 @@ stories:
   - intent: deny
   - action: utter_should_find_another_one
   - intent: deny
-  - action: utter_offer_refound_for_hotel
+  - action: utter_offer_refund_for_hotel
 
-- story: offer refound2
+- story: offer refund2
   steps:
   - intent: greet
   - action: utter_greet
@@ -1325,7 +1325,7 @@ stories:
     - is_authenticated: true
   - action: utter_ask_if_want_new_room
   - intent: deny
-  - action: utter_offer_refound_for_hotel
+  - action: utter_offer_refund_for_hotel
 
 - story: book package1
   steps:
@@ -1567,7 +1567,7 @@ stories:
   - action: action_find_new_room
   - slot_was_set:
     - no_available_room: true
-  - action: utter_offer_refound_for_hotel
+  - action: utter_offer_refund_for_hotel
 
 - story: user do not want hotel anymore
   steps:
@@ -1634,7 +1634,7 @@ stories:
   - intent: deny
   - action: utter_should_find_another_one
   - intent: deny
-  - action: utter_offer_refound_for_hotel
+  - action: utter_offer_refund_for_hotel
 
 - story: no more flights
   steps:

@@ -771,6 +771,7 @@ nlu:
     - do you know Taylor Swift?
     - somebody just lost 10 million yuan
     - do you know Flyme the plane agent?
+    - 1+1=？
 - intent: ask_about_guide_hotel_and_car_rental
   examples: |
     - what about the guide?
