@@ -102,6 +102,8 @@ nlu:
     - ?trippy
     - what does trippy do?
     - can you tell me about Trippy?
+    - can you tell me about your company
+
 - intent: ask_for_company_contact
   examples: |
     - Where is Trippy
@@ -112,6 +114,11 @@ nlu:
     - Do you have the number of trippy customer service?
     - where is trippy?
     - where is it?
+    - what's the trippy's number?
+    - I want to call trippy
+    - I want to visit tripy
+    - what's the openning hour of Trippy office
+    - what's the trippy's offcial email?
 - intent: ask_for_popular_packages
   examples: |
     - any suggestions?
