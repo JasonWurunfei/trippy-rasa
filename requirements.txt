@@ -136,7 +136,7 @@ threadpoolctl==3.0.0
 tqdm==4.62.3
 twilio==6.50.1
 typeguard==2.13.0
-typing-extensions==4.0.0
+typing-extensions
 tzlocal==2.1
 ujson==1.35
 urllib3==1.26.7
