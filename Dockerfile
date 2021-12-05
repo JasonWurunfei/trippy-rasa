@@ -4,6 +4,7 @@ FROM rasa/rasa
 # Change back to root user to install dependencies
 USER root
 
+# To install dependencies 
 COPY requirements.txt .
 
 # To install packages from PyPI
