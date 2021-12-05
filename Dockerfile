@@ -8,7 +8,7 @@ USER root
 COPY requirements.txt .
 
 # To install packages from PyPI
-RUN pip install --no-cache-dir -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Switch back to non-root to run code
 USER 1001
